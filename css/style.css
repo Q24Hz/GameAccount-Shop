@@ -1105,3 +1105,330 @@ body {
 .contact-btn i {
     font-size: 24px;
 }
+/* ===== AUTH PAGES (LOGIN/REGISTER) ===== */
+.auth-container {
+    max-width: 420px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    padding: 40px 30px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.auth-container:hover {
+    box-shadow: 0 15px 35px rgba(37, 99, 235, 0.2);
+    border-color: var(--accent-blue);
+}
+
+.auth-container h2 {
+    color: var(--text-primary);
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    width: 100%;
+}
+
+.auth-container .form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.auth-container .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.auth-container .form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--bg-hover);
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 15px;
+    transition: all 0.3s;
+    outline: none;
+}
+
+.auth-container .form-group input:focus {
+    border-color: var(--accent-blue);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+.auth-container .form-group input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+.auth-container .btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.auth-container .btn-primary::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.auth-container .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+}
+
+.auth-container .btn-primary:hover::before {
+    left: 100%;
+}
+
+.auth-container .btn-primary:active {
+    transform: translateY(0);
+}
+
+.auth-container .flash-message {
+    background: rgba(220, 38, 38, 0.15);
+    color: #f87171;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    text-align: center;
+    border: 1px solid #dc2626;
+    animation: shake 0.3s ease;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 25px;
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.auth-link a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    font-weight: 600;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.auth-link a::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    transition: width 0.3s;
+}
+
+.auth-link a:hover {
+    color: var(--accent-purple);
+}
+
+.auth-link a:hover::after {
+    width: 100%;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+/* ===== RESPONSIVE & FILTER TOGGLE ===== */
+.filter-toggle {
+    display: none;
+    margin-bottom: 15px;
+}
+
+.btn-filter-toggle {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.btn-filter-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+}
+
+.filter-sidebar {
+    transition: all 0.3s ease;
+}
+
+/* Media query cho mobile */
+@media (max-width: 768px) {
+    .content-wrapper {
+        grid-template-columns: 1fr; /* Chuyển thành 1 cột */
+    }
+
+    .filter-toggle {
+        display: block; /* Hiện nút toggle */
+    }
+
+    .filter-sidebar {
+        display: none; /* Ẩn sidebar mặc định */
+        margin-bottom: 20px;
+    }
+
+    .filter-sidebar.active {
+        display: block; /* Hiện khi có class active */
+        animation: slideDown 0.3s ease;
+    }
+
+    /* Animation cho sidebar khi hiện */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Điều chỉnh product grid cho mobile */
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+    }
+
+    .product-card .card-actions {
+        flex-direction: column;
+    }
+
+    .product-card .btn-view,
+    .product-card .btn-buy {
+        width: 100%;
+        margin: 2px 0;
+    }
+
+    /* Header */
+    .header-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-box {
+        max-width: 100%;
+        margin: 10px 0;
+    }
+
+    .user-actions {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-menu {
+        justify-content: center;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+
+    .nav-menu li a {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    /* Hero section */
+    .hero-section h1 {
+        font-size: 28px;
+    }
+
+    .hero-section p {
+        font-size: 16px;
+    }
+
+    /* Modal */
+    .modal-content {
+        width: 95%;
+        margin: 20% auto;
+        padding: 20px;
+    }
+
+    /* Auth container */
+    .auth-container {
+        padding: 30px 20px;
+    }
+
+    /* Footer */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .contact-info li {
+        justify-content: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .content-wrapper {
+        grid-template-columns: 220px 1fr;
+        gap: 20px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}

@@ -49,6 +49,13 @@
 
     <main class="main-content">
         <div class="container">
+            <!-- Nút toggle filter cho mobile -->
+            <div class="filter-toggle">
+                <button id="toggleFilterBtn" class="btn-filter-toggle">
+                    <i class="fas fa-filter"></i> Lọc sản phẩm
+                </button>
+            </div>
+
             <div class="content-wrapper">
                 <!-- Sidebar filter -->
                 <aside class="filter-sidebar">
@@ -147,7 +154,7 @@
         </div>
     </div>
 
-    <!-- Modal chờ duyệt (ĐÃ SỬA) -->
+    <!-- Modal chờ duyệt -->
     <div id="waitingModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="closeWaitingModal()">×</span>
@@ -178,7 +185,7 @@
         </div>
     </div>
 
-    <!-- Modal thành công (ĐÃ SỬA) -->
+    <!-- Modal thành công -->
     <div id="successModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="closeSuccessModal()">×</span>
@@ -205,7 +212,7 @@
         </div>
     </div>
 
-    <!-- Modal thất bại (ĐÃ SỬA) -->
+    <!-- Modal thất bại -->
     <div id="failModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="closeFailModal()">×</span>
@@ -232,7 +239,6 @@
         </div>
     </div>
 
-    <!-- FOOTER (ĐÃ SỬA) -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -297,6 +303,38 @@
             
             loadGamePage();
             checkPendingNotifications();
+
+            // Toggle filter sidebar trên mobile
+            const toggleFilterBtn = document.getElementById('toggleFilterBtn');
+            const filterSidebar = document.querySelector('.filter-sidebar');
+
+            if (toggleFilterBtn && filterSidebar) {
+                toggleFilterBtn.addEventListener('click', function() {
+                    filterSidebar.classList.toggle('active');
+                    
+                    const icon = this.querySelector('i');
+                    if (filterSidebar.classList.contains('active')) {
+                        icon.classList.remove('fa-filter');
+                        icon.classList.add('fa-times');
+                        this.innerHTML = '<i class="fas fa-times"></i> Đóng bộ lọc';
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-filter');
+                        this.innerHTML = '<i class="fas fa-filter"></i> Lọc sản phẩm';
+                    }
+                });
+            }
+
+            // Tự động đóng filter khi chọn một option trên mobile (tùy chọn)
+            document.querySelectorAll('.filter-options input').forEach(input => {
+                input.addEventListener('change', function() {
+                    if (window.innerWidth <= 768) {
+                        // Có thể tự động đóng filter sau khi chọn
+                        // filterSidebar.classList.remove('active');
+                        // toggleFilterBtn.innerHTML = '<i class="fas fa-filter"></i> Lọc sản phẩm';
+                    }
+                });
+            });
         });
 
         // Biến toàn cục
@@ -309,11 +347,9 @@
             const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
             const availableAccounts = accounts.filter(a => a.status === 'available');
             
-            // Lọc theo game được chọn
             const selectedGame = document.querySelector('input[name="game"]:checked')?.value || 'all';
             let filtered = selectedGame === 'all' ? availableAccounts : availableAccounts.filter(a => a.game === selectedGame);
             
-            // Lọc theo giá
             const priceValue = document.querySelector('input[name="price"]:checked')?.value || 'all';
             if (priceValue !== 'all') {
                 if (priceValue === '1000000+') {
@@ -324,7 +360,6 @@
                 }
             }
             
-            // Sắp xếp
             const sortBy = document.getElementById('sortSelect')?.value || 'newest';
             if (sortBy === 'priceAsc') {
                 filtered.sort((a, b) => a.price - b.price);
@@ -334,7 +369,6 @@
                 filtered.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
             }
             
-            // Hiển thị kết quả
             document.getElementById('resultCount').innerHTML = `<span>${filtered.length} tài khoản</span>`;
             
             const grid = document.getElementById('productGrid');
@@ -392,7 +426,6 @@
             document.getElementById('detailModal').style.display = 'none';
         };
 
-        // Hàm mở modal mua hàng
         window.openBuyModal = function(accountId, accountName, price) {
             currentAccountId = accountId;
             currentAccountPrice = price;
@@ -401,11 +434,9 @@
             document.getElementById('modalAccountName').innerHTML = 'Tài khoản: <span>' + accountName + '</span>';
             document.getElementById('modalPrice').innerText = formatPrice(price);
             
-            // Lấy tên người dùng hiện tại từ localStorage
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             const userName = currentUser ? (currentUser.username || '') : '';
             
-            // Tạo nội dung chuyển khoản random: 5 chữ viết hoa + " - " + tên user
             const randomCode = generateRandomCode(5);
             const transferContent = randomCode + (userName ? ' - ' + userName : '');
             document.getElementById('transferContent').value = transferContent;
@@ -429,7 +460,6 @@
             document.getElementById('failModal').style.display = 'none';
         };
 
-        // Sao chép nội dung chuyển khoản
         document.getElementById('copyTransferBtn')?.addEventListener('click', function() {
             let copyText = document.getElementById('transferContent');
             copyText.select();
@@ -438,7 +468,6 @@
             alert('Đã sao chép nội dung: ' + copyText.value);
         });
 
-        // Xác nhận mua
         document.getElementById('confirmBuy')?.addEventListener('click', function() {
             const buyerName = document.getElementById('buyerName').value.trim();
             const buyerPhone = document.getElementById('buyerPhone').value.trim();
@@ -456,7 +485,6 @@
                 return;
             }
 
-            // Lấy thông tin tài khoản
             const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
             const account = accounts.find(a => a.id === currentAccountId);
             if (!account || account.status !== 'available') {
@@ -465,7 +493,6 @@
                 return;
             }
 
-            // Tạo đơn hàng mới
             const newOrder = {
                 id: Date.now(),
                 userId: currentUser.id,
@@ -480,17 +507,14 @@
                 accountInfo: null
             };
 
-            // Lưu vào localStorage
             let orders = JSON.parse(localStorage.getItem('orders') || '[]');
             orders.push(newOrder);
             localStorage.setItem('orders', JSON.stringify(orders));
 
-            // Đóng modal mua và mở modal chờ
             closeBuyModal();
             document.getElementById('waitingModal').style.display = 'block';
         });
 
-        // Hàm random mã
         function generateRandomCode(length) {
             let result = '';
             let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -500,12 +524,10 @@
             return result;
         }
 
-        // Hàm format giá
         function formatPrice(price) {
             return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'đ';
         }
 
-        // Kiểm tra thông báo từ admin
         function checkPendingNotifications() {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             if (!currentUser) return;
@@ -513,7 +535,6 @@
             const orders = JSON.parse(localStorage.getItem('orders') || '[]');
             const notifiedOrders = JSON.parse(localStorage.getItem('notifiedOrders') || '[]');
             
-            // Tìm đơn approved gần nhất chưa được thông báo
             const approvedOrder = orders.find(o => o.userId === currentUser.id && o.status === 'approved' && !notifiedOrders.includes(o.id));
             if (approvedOrder) {
                 const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
@@ -532,7 +553,6 @@
                 document.getElementById('successModal').style.display = 'block';
             }
 
-            // Tìm đơn rejected gần nhất chưa được thông báo
             const rejectedOrder = orders.find(o => o.userId === currentUser.id && o.status === 'rejected' && !notifiedOrders.includes(o.id));
             if (rejectedOrder) {
                 notifiedOrders.push(rejectedOrder.id);
@@ -541,7 +561,6 @@
             }
         }
 
-        // Lắng nghe sự kiện thay đổi filter
         document.getElementById('applyFilter')?.addEventListener('click', loadGamePage);
         document.getElementById('sortSelect')?.addEventListener('change', loadGamePage);
         document.querySelectorAll('input[name="game"]').forEach(radio => {
@@ -557,10 +576,41 @@
             radio.addEventListener('change', loadGamePage);
         });
 
-        // Search
         document.getElementById('searchBtn')?.addEventListener('click', function() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             window.location.href = 'games.html?search=' + encodeURIComponent(keyword);
+            // Toggle filter sidebar trên mobile
+const toggleFilterBtn = document.getElementById('toggleFilterBtn');
+const filterSidebar = document.querySelector('.filter-sidebar');
+
+if (toggleFilterBtn && filterSidebar) {
+    toggleFilterBtn.addEventListener('click', function() {
+        filterSidebar.classList.toggle('active');
+        
+        // Đổi icon và text
+        const icon = this.querySelector('i');
+        if (filterSidebar.classList.contains('active')) {
+            icon.classList.remove('fa-filter');
+            icon.classList.add('fa-times');
+            this.innerHTML = '<i class="fas fa-times"></i> Đóng bộ lọc';
+        } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-filter');
+            this.innerHTML = '<i class="fas fa-filter"></i> Lọc sản phẩm';
+        }
+    });
+}
+
+// Tự động đóng filter khi chọn một option trên mobile
+document.querySelectorAll('.filter-options input').forEach(input => {
+    input.addEventListener('change', function() {
+        if (window.innerWidth <= 768) {
+            // Có thể tự động đóng filter sau khi chọn (tùy chọn)
+            // filterSidebar.classList.remove('active');
+            // toggleFilterBtn.innerHTML = '<i class="fas fa-filter"></i> Lọc sản phẩm';
+        }
+    });
+});
         });
     </script>
 </body>
