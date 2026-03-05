@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <i class="fas fa-gamepad"></i>
+                        <span>GameAccount Shop - Admin</span>
+                    </a>
+                </div>
+                <div class="user-actions" id="userActions"></div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="index.html"><i class="fas fa-home"></i> Về trang chủ</a></li>
+                <li class="active"><a href="admin.html"><i class="fas fa-cog"></i> Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Quick Stats Overview -->
+            <div class="quick-stats">
+                <h3>Quick Stats</h3>
+                <div class="quick-stats-grid">
+                    <div class="quick-stat-item">
+                        <div class="value" id="quickProducts">10</div>
+                        <div class="label">Products</div>
+                    </div>
+                    <div class="quick-stat-item">
+                        <div class="value" id="quickOrders">2</div>
+                        <div class="label">Orders</div>
+                    </div>
+                    <div class="quick-stat-item">
+                        <div class="value" id="quickUsers">7</div>
+                        <div class="label">Users</div>
+                    </div>
+                </div>
+                <a href="#" style="color: var(--accent-blue); margin-top: 10px; display: inline-block;">View detailed reports →</a>
+            </div>
+
+            <h1>Admin Dashboard</h1>
+            
+            <div class="admin-tabs">
+                <button class="tab-btn active" data-tab="stats">Thống kê</button>
+                <button class="tab-btn" data-tab="orders">Quản lý đơn hàng</button>
+                <button class="tab-btn" data-tab="customers">Khách hàng</button>
+                <button class="tab-btn" data-tab="add">Thêm tài khoản</button>
+                <button class="tab-btn" data-tab="revenue">Doanh thu</button>
+                <button class="tab-btn" data-tab="manage">Quản lý tài khoản</button>
+            </div>
+
+            <!-- Tab Thống kê (Dashboard) -->
+            <div id="stats-tab" class="tab-content active">
+                <!-- Welcome message -->
+                <div style="margin-bottom: 30px;">
+                    <h2>Welcome back, Admin!</h2>
+                    <p style="color: var(--text-secondary);">Here's what's happening with your store today</p>
+                    <p style="color: var(--text-secondary);"><i class="far fa-calendar-alt"></i> Monday, July 28, 2025</p>
+                </div>
+
+                <!-- Main stats cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Revenue</h3>
+                        <p id="totalRevenue">2.200 đ</p>
+                        <small style="color: var(--text-secondary);">+ today</small>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Orders</h3>
+                        <p id="totalOrders">2</p>
+                        <small style="color: var(--text-secondary);">+ today</small>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Products</h3>
+                        <p id="totalProducts">10</p>
+                        <small style="color: var(--text-secondary);">All in stock</small>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Customers</h3>
+                        <p id="totalCustomers">7</p>
+                        <small style="color: var(--text-secondary);">+ today</small>
+                    </div>
+                </div>
+
+                <!-- Sales Overview (placeholder chart) -->
+                <div style="background: var(--bg-card); padding: 24px; border-radius: var(--radius-lg); margin-bottom: 30px;">
+                    <h3 style="margin-bottom: 15px;">Sales Overview</h3>
+                    <div style="height: 200px; display: flex; align-items: flex-end; gap: 20px;">
+                        <div style="width: 40px; height: 120px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border-radius: 8px;"></div>
+                        <div style="width: 40px; height: 80px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border-radius: 8px;"></div>
+                        <div style="width: 40px; height: 160px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border-radius: 8px;"></div>
+                        <div style="width: 40px; height: 100px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border-radius: 8px;"></div>
+                        <div style="width: 40px; height: 140px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border-radius: 8px;"></div>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-top: 15px;">Chart integration coming soon.</p>
+                </div>
+
+               <!-- Quick Actions -->
+<div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px;">
+    <button class="btn" onclick="window.location.href='#add-tab'"><i class="fas fa-plus"></i> Add New Product</button>
+    <button class="btn" onclick="document.querySelector('[data-tab=&quot;orders&quot;]').click()"><i class="fas fa-shopping-cart"></i> Manage Orders</button>
+    <button class="btn" onclick="document.querySelector('[data-tab=&quot;customers&quot;]').click()"><i class="fas fa-users"></i> View Customers</button>
+    <button class="btn" onclick="window.location.href='#reports'"><i class="fas fa-chart-line"></i> View Reports</button>
+</div>
+                <!-- Order Status Distribution & Recent Orders -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div style="background: var(--bg-card); padding: 20px; border-radius: var(--radius-lg);">
+                        <h3>Order Status Distribution</h3>
+                        <div style="margin-top: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span>Pending:</span> <span id="pendingCount">0</span></div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span>Processing:</span> <span id="processingCount">1</span></div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;"><span>Completed:</span> <span id="completedCount">1</span></div>
+                            <div style="display: flex; justify-content: space-between;"><span>Others:</span> <span id="othersCount">0</span></div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-card); padding: 20px; border-radius: var(--radius-lg);">
+                        <h3>Recent Orders</h3>
+                        <div id="recentOrdersList">
+                            <!-- Dynamically loaded -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Quản lý đơn hàng (Orders) -->
+            <div id="orders-tab" class="tab-content">
+                <h2>Manage Orders</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Theo dõi và quản lý tất cả đơn hàng</p>
+                
+                <!-- Filter bar -->
+                <div class="filter-bar">
+                    <div class="form-group" style="margin: 0;">
+                        <label>Status</label>
+                        <select class="form-control" id="orderStatusFilter">
+                            <option value="all">Tất cả</option>
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                            <option value="approved">Completed</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin: 0;">
+                        <label>From Date</label>
+                        <input type="date" class="form-control" id="fromDate">
+                    </div>
+                    <div class="form-group" style="margin: 0;">
+                        <label>To Date</label>
+                        <input type="date" class="form-control" id="toDate">
+                    </div>
+                    <div class="form-group" style="margin: 0; align-self: flex-end;">
+                        <button class="btn" id="applyOrderFilter">Apply</button>
+                    </div>
+                </div>
+
+                <h3>Đơn hàng chờ duyệt</h3>
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingOrdersList">
+                        <!-- JS sẽ load -->
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top: 30px;">Đơn hàng đã xử lý</h3>
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="processedOrdersList">
+                        <!-- JS sẽ load -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tab Khách hàng (Customers) -->
+            <div id="customers-tab" class="tab-content">
+                <h2>Customers Management</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Theo dõi và quản lý tất cả khách hàng</p>
+                
+                <!-- Customer stats -->
+                <div class="stats-grid" style="grid-template-columns: repeat(4,1fr);">
+                    <div class="stat-card">
+                        <h3>Total Customers</h3>
+                        <p id="totalCustomersStat">7</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>With Orders</h3>
+                        <p id="customersWithOrders">1</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active (30d)</h3>
+                        <p id="activeCustomers">1</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Avg. Spent</h3>
+                        <p id="avgSpent">2.200 đ</p>
+                    </div>
+                </div>
+
+                <table class="customers-table">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Role</th>
+                            <th>Registered</th>
+                            <th>Orders</th>
+                            <th>Total Spent</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customersList">
+                        <!-- JS sẽ load -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tab Thêm tài khoản (giữ nguyên) -->
+            <div id="add-tab" class="tab-content">
+                <h2>Thêm tài khoản mới</h2>
+                <form id="addAccountForm">
+                    <!-- giữ nguyên form cũ -->
+                    <div class="form-group">
+                        <label for="game">Chọn game</label>
+                        <select id="game" required>
+                            <option value="lien-quan">Liên Quân Mobile</option>
+                            <option value="tft">Đấu Trường Chân Lý</option>
+                            <option value="play-together">PlayTogether</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Tên tài khoản</label>
+                        <input type="text" id="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rank">Rank / Cấp độ</label>
+                        <input type="text" id="rank" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="details">Mô tả chi tiết</label>
+                        <textarea id="details" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Giá (VNĐ)</label>
+                        <input type="number" id="price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="oldPrice">Giá cũ (nếu có)</label>
+                        <input type="number" id="oldPrice">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginEmail">Email đăng nhập game</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Mật khẩu game</label>
+                        <input type="text" id="loginPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="images">Ảnh (có thể nhập nhiều link, cách nhau bởi dấu phẩy)</label>
+                        <input type="text" id="images" placeholder="https://example.com/1.jpg,https://example.com/2.jpg">
+                    </div>
+                    <button type="submit" class="btn-primary">Thêm tài khoản</button>
+                </form>
+                <div id="addMessage"></div>
+            </div>
+
+            <!-- Tab Doanh thu -->
+            <div id="revenue-tab" class="tab-content">
+                <h2>Doanh thu theo tháng</h2>
+                <table class="revenue-table">
+                    <thead>
+                        <tr>
+                            <th>Tháng</th>
+                            <th>Doanh thu</th>
+                        </tr>
+                    </thead>
+                    <tbody id="revenueTable"></tbody>
+                </table>
+            </div>
+
+            <!-- Tab Quản lý tài khoản -->
+            <div id="manage-tab" class="tab-content">
+                <h2>Danh sách tài khoản</h2>
+                <table class="accounts-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Game</th>
+                            <th>Tên</th>
+                            <th>Rank</th>
+                            <th>Giá</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountsList"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <!-- giống index -->
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Kiểm tra quyền admin
+        (function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.role !== 'admin') {
+                alert('Bạn không có quyền truy cập trang này!');
+                window.location.href = 'index.html';
+            }
+        })();
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab + '-tab').classList.add('active');
+                
+                // Load data khi chuyển tab
+                if (this.dataset.tab === 'orders') {
+                    loadOrders();
+                } else if (this.dataset.tab === 'manage') {
+                    loadAccountsList();
+                } else if (this.dataset.tab === 'stats') {
+                    loadStats();
+                } else if (this.dataset.tab === 'revenue') {
+                    loadRevenue();
+                } else if (this.dataset.tab === 'customers') {
+                    loadCustomers();
+                }
+            });
+        });
+
+        // Load thống kê
+        function loadStats() {
+            const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            const total = accounts.length;
+            const sold = accounts.filter(a => a.status === 'sold').length;
+            const available = total - sold;
+            const revenue = orders.filter(o => o.status === 'approved').reduce((sum, o) => sum + o.price, 0);
+
+            document.getElementById('totalProducts').textContent = total;
+            document.getElementById('totalRevenue').textContent = revenue.toLocaleString() + ' đ';
+            document.getElementById('totalOrders').textContent = orders.length;
+            document.getElementById('totalCustomers').textContent = users.length;
+
+            document.getElementById('quickProducts').textContent = total;
+            document.getElementById('quickOrders').textContent = orders.length;
+            document.getElementById('quickUsers').textContent = users.length;
+
+            // Order status distribution
+            const pending = orders.filter(o => o.status === 'pending').length;
+            const processing = orders.filter(o => o.status === 'processing' || o.status === 'pending').length; // tạm
+            const completed = orders.filter(o => o.status === 'approved').length;
+            const others = orders.filter(o => o.status === 'rejected').length;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('processingCount').textContent = processing;
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('othersCount').textContent = others;
+
+            // Recent orders
+            const recentTbody = document.getElementById('recentOrdersList');
+            recentTbody.innerHTML = '';
+            orders.slice(-5).reverse().forEach(order => {
+                const account = accounts.find(a => a.id === order.accountId) || { title: 'Đã xóa' };
+                const user = users.find(u => u.id === order.userId) || { username: 'Guest' };
+                const div = document.createElement('div');
+                div.style.padding = '10px 0';
+                div.style.borderBottom = '1px solid var(--border-color)';
+                div.innerHTML = `
+                    <div style="display: flex; justify-content: space-between;">
+                        <span><strong>${account.title}</strong> - ${user.username}</span>
+                        <span class="status-badge status-${order.status === 'approved' ? 'success' : order.status}">${order.status}</span>
+                    </div>
+                    <div style="color: var(--text-secondary); font-size: 13px;">${new Date(order.createdAt).toLocaleDateString('vi-VN')} - ${order.price.toLocaleString()}đ</div>
+                `;
+                recentTbody.appendChild(div);
+            });
+        }
+
+        // Load orders
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+            // Đơn pending
+            const pendingOrders = orders.filter(o => o.status === 'pending');
+            const pendingTbody = document.getElementById('pendingOrdersList');
+            pendingTbody.innerHTML = '';
+            pendingOrders.forEach(order => {
+                const account = accounts.find(a => a.id === order.accountId) || { title: 'Đã xóa' };
+                const user = users.find(u => u.id === order.userId) || { username: 'Guest' };
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>ORD-${order.id}</td>
+                    <td>${user.username}<br><small style="color:var(--text-secondary)">${user.email || ''}</small></td>
+                    <td><span class="status-badge status-pending">Pending</span></td>
+                    <td>SePay</td>
+                    <td>${order.price.toLocaleString()} đ<br>
+                        <button class="btn-approve" onclick="approveOrder(${order.id})">Xác nhận</button>
+                        <button class="btn-reject" onclick="rejectOrder(${order.id})">Từ chối</button>
+                    </td>
+                `;
+                pendingTbody.appendChild(row);
+            });
+
+            // Đơn đã xử lý
+            const processedOrders = orders.filter(o => o.status !== 'pending').sort((a,b) => new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt));
+            const processedTbody = document.getElementById('processedOrdersList');
+            processedTbody.innerHTML = '';
+            processedOrders.forEach(order => {
+                const account = accounts.find(a => a.id === order.accountId) || { title: 'Đã xóa' };
+                const user = users.find(u => u.id === order.userId) || { username: 'Guest' };
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>ORD-${order.id}</td>
+                    <td>${user.username}<br><small>${user.email || ''}</small></td>
+                    <td><span class="status-badge status-${order.status === 'approved' ? 'success' : 'failed'}">${order.status === 'approved' ? 'Delivered' : 'Rejected'}</span></td>
+                    <td>SePay</td>
+                    <td>${order.price.toLocaleString()} đ</td>
+                `;
+                processedTbody.appendChild(row);
+            });
+        }
+
+        // Load customers
+        function loadCustomers() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            
+            const customers = users.filter(u => u.role !== 'admin'); // chỉ hiển thị khách hàng
+            const tbody = document.getElementById('customersList');
+            tbody.innerHTML = '';
+
+            let withOrders = 0;
+            let totalSpentAll = 0;
+
+            customers.forEach(user => {
+                const userOrders = orders.filter(o => o.userId === user.id);
+                const orderCount = userOrders.length;
+                const spent = userOrders.filter(o => o.status === 'approved').reduce((sum, o) => sum + o.price, 0);
+                if (orderCount > 0) withOrders++;
+                totalSpentAll += spent;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <strong>${user.username}</strong><br>
+                        <small style="color:var(--text-secondary)">${user.email}</small>
+                    </td>
+                    <td>Shop customer</td>
+                    <td>${new Date(user.id).toLocaleDateString('vi-VN')}</td>
+                    <td>${orderCount}</td>
+                    <td>${spent.toLocaleString()} đ</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('totalCustomersStat').textContent = customers.length;
+            document.getElementById('customersWithOrders').textContent = withOrders;
+            document.getElementById('activeCustomers').textContent = withOrders; // tạm
+            const avg = customers.length ? totalSpentAll / customers.length : 0;
+            document.getElementById('avgSpent').textContent = avg.toLocaleString() + ' đ';
+        }
+
+        // Xử lý duyệt đơn
+        window.approveOrder = function(orderId) {
+            if (!confirm('Xác nhận duyệt đơn hàng này?')) return;
+
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            let accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex === -1) return;
+
+            const order = orders[orderIndex];
+            const accountIndex = accounts.findIndex(a => a.id === order.accountId);
+            if (accountIndex === -1) {
+                alert('Không tìm thấy tài khoản!');
+                return;
+            }
+
+            accounts[accountIndex].status = 'sold';
+            orders[orderIndex].status = 'approved';
+            orders[orderIndex].updatedAt = new Date().toISOString();
+
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            const notifiedOrders = JSON.parse(localStorage.getItem('notifiedOrders') || '[]');
+            notifiedOrders.push(orderId);
+            localStorage.setItem('notifiedOrders', JSON.stringify(notifiedOrders));
+
+            loadOrders();
+            loadStats();
+            alert('Đã duyệt đơn hàng thành công!');
+        };
+
+        window.rejectOrder = function(orderId) {
+            if (!confirm('Từ chối đơn hàng này?')) return;
+
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex === -1) return;
+
+            orders[orderIndex].status = 'rejected';
+            orders[orderIndex].updatedAt = new Date().toISOString();
+
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            const notifiedOrders = JSON.parse(localStorage.getItem('notifiedOrders') || '[]');
+            notifiedOrders.push(orderId);
+            localStorage.setItem('notifiedOrders', JSON.stringify(notifiedOrders));
+
+            loadOrders();
+            alert('Đã từ chối đơn hàng!');
+        };
+
+        // Các hàm còn lại giữ nguyên
+        document.getElementById('addAccountForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            const newAccount = {
+                id: Date.now(),
+                game: document.getElementById('game').value,
+                title: document.getElementById('title').value,
+                rank: document.getElementById('rank').value,
+                details: document.getElementById('details').value,
+                price: parseInt(document.getElementById('price').value),
+                oldPrice: document.getElementById('oldPrice').value ? parseInt(document.getElementById('oldPrice').value) : null,
+                loginEmail: document.getElementById('loginEmail').value,
+                loginPassword: document.getElementById('loginPassword').value,
+                images: document.getElementById('images').value.split(',').map(s => s.trim()).filter(s => s),
+                status: 'available',
+                date: new Date().toISOString()
+            };
+            accounts.push(newAccount);
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            document.getElementById('addMessage').innerHTML = '<p style="color:green;">Thêm tài khoản thành công!</p>';
+            this.reset();
+            loadStats();
+        });
+
+        function loadRevenue() {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]').filter(o => o.status === 'approved');
+            const monthly = {};
+            orders.forEach(order => {
+                const date = new Date(order.updatedAt || order.createdAt);
+                const month = date.getMonth() + 1;
+                const year = date.getFullYear();
+                const key = `${year}-${month}`;
+                monthly[key] = (monthly[key] || 0) + order.price;
+            });
+            const tbody = document.getElementById('revenueTable');
+            tbody.innerHTML = '';
+            Object.keys(monthly).sort().reverse().forEach(key => {
+                const [year, month] = key.split('-');
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>Tháng ${month}/${year}</td><td>${monthly[key].toLocaleString()}đ</td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        function loadAccountsList() {
+            const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            const tbody = document.getElementById('accountsList');
+            tbody.innerHTML = '';
+            accounts.forEach(acc => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${acc.id}</td>
+                    <td>${acc.game === 'lien-quan' ? 'Liên Quân' : acc.game === 'tft' ? 'TFT' : 'PlayTogether'}</td>
+                    <td>${acc.title}</td>
+                    <td>${acc.rank || ''}</td>
+                    <td>${acc.price.toLocaleString()}đ</td>
+                    <td><span class="status-badge status-${acc.status === 'available' ? 'pending' : 'success'}">${acc.status === 'available' ? 'Còn bán' : 'Đã bán'}</span></td>
+                    <td><button class="btn-delete" onclick="deleteAccount(${acc.id})">Xóa</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        window.deleteAccount = function(id) {
+            if (confirm('Bạn có chắc muốn xóa tài khoản này?')) {
+                let accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+                accounts = accounts.filter(acc => acc.id !== id);
+                localStorage.setItem('accounts', JSON.stringify(accounts));
+                loadAccountsList();
+                loadStats();
+            }
+        };
+
+        // Khởi tạo
+        loadStats();
+        loadRevenue();
+        loadUserActions();
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameAccount Shop - Trang chủ</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <i class="fas fa-gamepad"></i>
+                        <span>GameAccount Shop</span>
+                    </a>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Tìm tài khoản...">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-actions" id="userActions"></div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-menu">
+                <li class="active"><a href="index.html"><i class="fas fa-home"></i> Trang chủ</a></li>
+                <li><a href="games.html"><i class="fas fa-gamepad"></i> Kho game</a></li>
+                <li><a href="#"><i class="fas fa-tags"></i> Khuyến mãi</a></li>
+                <li><a href="#"><i class="fas fa-headset"></i> Hỗ trợ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="hero-section">
+                <h1>GameAccount Shop</h1>
+                <p>Mua bán tài khoản game uy tín - Giá tốt nhất thị trường</p>
+                <p>🏆 Bảo hành trọn đời | 🔥 Hỗ trợ 24/7 | ⚡ Giao acc tự động</p>
+            </div>
+            
+            <h2 class="section-title">Danh mục game</h2>
+            <div class="game-categories">
+                <div class="game-card">
+                    <img src="https://tse1.explicit.bing.net/th/id/OIP.MPAFL1PKX76E7E8FxXK2cQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Liên Quân">
+                    <h3>Liên Quân Mobile</h3>
+                    <a href="games.html?game=lien-quan" class="btn">Xem kho acc</a>
+                </div>
+                <div class="game-card">
+                    <img src="https://th.bing.com/th/id/OIP.Y-cOTZ2bFKfo597to3Cj_wHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" alt="TFT">
+                    <h3>Đấu Trường Chân Lý</h3>
+                    <a href="games.html?game=tft" class="btn">Xem kho acc</a>
+                </div>
+                <div class="game-card">
+                    <img src="https://nguoinoitieng.tv/images/nnt/106/0/bi34.jpg" alt="PlayTogether">
+                    <h3>PlayTogether</h3>
+                    <a href="games.html?game=play-together" class="btn">Xem kho acc</a>
+                </div>
+            </div>
+
+            <h2 class="section-title">Tài khoản mới nhất</h2>
+            <div class="product-grid" id="recent-accounts"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Về chúng tôi</h4>
+                    <p>Shop chuyên cung cấp tài khoản game Liên Quân, TFT, PlayTogether uy tín, giá rẻ. Bảo hành trọn đời, hỗ trợ 24/7.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Liên kết nhanh</h4>
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li><a href="games.html?game=lien-quan">Liên Quân</a></li>
+                        <li><a href="games.html?game=tft">TFT</a></li>
+                        <li><a href="games.html?game=play-together">PlayTogether</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Chính sách</h4>
+                    <ul>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Bảo mật thông tin</a></li>
+                        <li><a href="#">Điều khoản dịch vụ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Liên hệ</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-phone"></i> 0987.654.321</li>
+                        <li><i class="fas fa-envelope"></i> support@gameaccshop.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam</li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-zalo"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 GameAccount Shop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserActions();
+            loadRecentAccounts();
+        });
+    </script>
+</body>
+</html>

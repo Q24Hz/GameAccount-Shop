@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <i class="fas fa-gamepad"></i>
+                        <span>GameAccount Shop</span>
+                    </a>
+                </div>
+                <div class="user-actions" id="userActions"></div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="index.html"><i class="fas fa-home"></i> Trang chủ</a></li>
+                <li><a href="games.html"><i class="fas fa-gamepad"></i> Kho game</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="auth-container">
+                <h2>Đăng nhập</h2>
+                <div id="errorMsg" class="flash-message" style="display: none;"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Tên đăng nhập</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Mật khẩu</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Đăng nhập</button>
+                </form>
+                <p class="auth-link">Chưa có tài khoản? <a href="register.html">Đăng ký</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <!-- giống index -->
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                window.location.href = 'index.html';
+            } else {
+                const errorDiv = document.getElementById('errorMsg');
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Sai tên đăng nhập hoặc mật khẩu';
+            }
+        });
+        loadUserActions();
+    </script>
+</body>
+</html>

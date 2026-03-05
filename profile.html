@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ của tôi</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <i class="fas fa-gamepad"></i>
+                        <span>GameAccount Shop</span>
+                    </a>
+                </div>
+                <div class="user-actions" id="userActions"></div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="index.html"><i class="fas fa-home"></i> Trang chủ</a></li>
+                <li><a href="games.html"><i class="fas fa-gamepad"></i> Kho game</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>Hồ sơ của tôi</h1>
+            <div id="userInfo" class="user-info-card">
+                <!-- Thông tin user sẽ được hiển thị ở đây -->
+            </div>
+
+            <h2>Lịch sử giao dịch</h2>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Tài khoản</th>
+                        <th>Giá</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày mua</th>
+                        <th>Thông tin TK</th>
+                    </tr>
+                </thead>
+                <tbody id="orderHistory"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <!-- giống index -->
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserActions();
+            loadProfile();
+        });
+
+        function loadProfile() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('Vui lòng đăng nhập để xem hồ sơ');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Hiển thị thông tin user
+            const userInfoDiv = document.getElementById('userInfo');
+            userInfoDiv.innerHTML = `
+                <p><strong>Tên đăng nhập:</strong> ${currentUser.username}</p>
+                <p><strong>Email:</strong> ${currentUser.email}</p>
+                <p><strong>Vai trò:</strong> ${currentUser.role === 'admin' ? 'Quản trị viên' : 'Thành viên'}</p>
+            `;
+
+            // Lấy lịch sử đơn hàng
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            const userOrders = orders.filter(o => o.userId === currentUser.id).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            const tbody = document.getElementById('orderHistory');
+            tbody.innerHTML = '';
+
+            if (userOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Chưa có giao dịch nào</td></tr>';
+                return;
+            }
+
+            userOrders.forEach(order => {
+                const account = accounts.find(a => a.id === order.accountId) || { title: 'Đã xóa' };
+                const row = document.createElement('tr');
+                
+                let statusText = '';
+                let statusClass = '';
+                if (order.status === 'pending') {
+                    statusText = 'Chờ duyệt';
+                    statusClass = 'status-pending';
+                } else if (order.status === 'approved') {
+                    statusText = 'Thành công';
+                    statusClass = 'status-success';
+                } else {
+                    statusText = 'Thất bại';
+                    statusClass = 'status-failed';
+                }
+
+                let accountInfoBtn = '';
+                if (order.status === 'approved') {
+                    const acc = accounts.find(a => a.id === order.accountId);
+                    if (acc && acc.loginEmail) {
+                        accountInfoBtn = `<button class="btn-view" onclick="viewAccountInfo(${order.accountId})">Xem TK</button>`;
+                    } else {
+                        accountInfoBtn = 'Không có';
+                    }
+                } else {
+                    accountInfoBtn = '---';
+                }
+
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${account.title}</td>
+                    <td>${order.price.toLocaleString()}đ</td>
+                    <td><span class="${statusClass}">${statusText}</span></td>
+                    <td>${new Date(order.createdAt).toLocaleString('vi-VN')}</td>
+                    <td>${accountInfoBtn}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        window.viewAccountInfo = function(accountId) {
+            const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            const acc = accounts.find(a => a.id === accountId);
+            if (acc && acc.loginEmail) {
+                alert(`Tài khoản: ${acc.loginEmail}\nMật khẩu: ${acc.loginPassword}`);
+            } else {
+                alert('Không tìm thấy thông tin tài khoản');
+            }
+        };
+    </script>
+</body>
+</html>

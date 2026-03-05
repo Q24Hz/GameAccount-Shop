@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameAccount Shop - Kho game</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <i class="fas fa-gamepad"></i>
+                        <span>GameAccount Shop</span>
+                    </a>
+                </div>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Tìm tài khoản...">
+                    <button id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-actions" id="userActions"></div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="index.html"><i class="fas fa-home"></i> Trang chủ</a></li>
+                <li class="active"><a href="games.html"><i class="fas fa-gamepad"></i> Kho game</a></li>
+                <li><a href="#"><i class="fas fa-tags"></i> Khuyến mãi</a></li>
+                <li><a href="#"><i class="fas fa-headset"></i> Hỗ trợ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><i class="fas fa-chevron-right"></i></li>
+                <li><a href="#" id="gameTitleDisplay">Kho game</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="content-wrapper">
+                <!-- Sidebar filter -->
+                <aside class="filter-sidebar">
+                    <h3 class="filter-title"><i class="fas fa-filter"></i> Bộ lọc</h3>
+                    <div class="filter-group">
+                        <h4>Chọn game</h4>
+                        <div class="filter-options" id="gameFilter">
+                            <label><input type="radio" name="game" value="all" checked> Tất cả</label>
+                            <label><input type="radio" name="game" value="lien-quan"> Liên Quân</label>
+                            <label><input type="radio" name="game" value="tft"> Đấu Trường Chân Lý</label>
+                            <label><input type="radio" name="game" value="play-together"> PlayTogether</label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <h4>Theo Rank</h4>
+                        <div class="filter-options" id="rankFilter"></div>
+                    </div>
+                    <div class="filter-group">
+                        <h4>Theo Giá</h4>
+                        <div class="filter-options" id="priceFilter">
+                            <label><input type="radio" name="price" value="all" checked> Tất cả</label>
+                            <label><input type="radio" name="price" value="0-200000"> Dưới 200k</label>
+                            <label><input type="radio" name="price" value="200000-500000"> 200k - 500k</label>
+                            <label><input type="radio" name="price" value="500000-1000000"> 500k - 1tr</label>
+                            <label><input type="radio" name="price" value="1000000+"> Trên 1tr</label>
+                        </div>
+                    </div>
+                    <button class="apply-filter-btn" id="applyFilter">Áp dụng</button>
+                </aside>
+
+                <!-- Product list -->
+                <section class="product-list">
+                    <div class="sort-bar">
+                        <div class="sort-info" id="resultCount"></div>
+                        <div class="sort-options">
+                            <label>Sắp xếp:</label>
+                            <select id="sortSelect">
+                                <option value="newest">Mới nhất</option>
+                                <option value="priceAsc">Giá thấp đến cao</option>
+                                <option value="priceDesc">Giá cao đến thấp</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="product-grid" id="productGrid"></div>
+                    <div class="pagination" id="pagination"></div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal xem chi tiết -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDetailModal()">&times;</span>
+            <h3>Chi tiết tài khoản</h3>
+            <div id="detailContent"></div>
+            <div style="margin-top:20px; text-align:center;">
+                <button id="buyFromDetail" class="btn-primary">Mua ngay</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal mua hàng -->
+    <div id="buyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBuyModal()">×</span>
+            <h3>Xác nhận mua tài khoản</h3>
+            <p id="modalAccountName">Tài khoản: <span id="accountNameDisplay"></span></p>
+            
+            <div class="form-group">
+                <label>Tên của bạn:</label>
+                <input type="text" id="buyerName" class="form-control" required placeholder="Nhập tên của bạn">
+            </div>
+            
+            <div class="form-group">
+                <label>Số điện thoại (không bắt buộc):</label>
+                <input type="text" id="buyerPhone" class="form-control" placeholder="Để lại số nếu cần hỗ trợ">
+                <small class="text-muted">Khi thanh toán, nhớ ghi đúng nội dung chuyển khoản bên dưới.</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Giá: <span id="modalPrice">0đ</span></label>
+            </div>
+            
+            <!-- Nội dung chuyển khoản (random + tên user) -->
+            <div class="form-group">
+                <label>Nội dung chuyển khoản:</label>
+                <div style="display: flex; align-items: center;">
+                    <input type="text" id="transferContent" class="form-control" readonly value="" style="flex:1;">
+                    <button type="button" id="copyTransferBtn" class="btn-sm" style="margin-left:5px;">Sao chép</button>
+                </div>
+                <small class="text-danger">(Chỉ khi chuyển khoản có nội dung mới được duyệt)</small>
+            </div>
+            
+            <button id="confirmBuy" class="btn-primary" style="margin-top:15px;">Xác nhận mua</button>
+        </div>
+    </div>
+
+    <!-- Modal chờ duyệt (ĐÃ SỬA) -->
+    <div id="waitingModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeWaitingModal()">×</span>
+            <div style="text-align:center;">
+                <span style="font-size:5rem; display:inline-block;" class="spin">⏳</span>
+                <h3>Đang chờ duyệt</h3>
+                <p>Đơn hàng của bạn đang được xử lý. Vui lòng chờ trong giây lát.</p>
+                
+                <!-- THÔNG TIN HỖ TRỢ MỚI -->
+                <div style="background: var(--bg-hover); padding: 20px; border-radius: var(--radius-lg); margin: 20px 0;">
+                    <p style="margin-bottom: 15px; color: var(--text-primary); font-weight: 500;">📞 LIÊN HỆ HỖ TRỢ</p>
+                    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                        <!-- Zalo -->
+                        <a href="https://zalo.me/0369521028" target="_blank" style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #0068ff, #00aaff); padding: 10px 20px; border-radius: 50px; text-decoration: none; color: white; font-weight: 500;">
+                            <i class="fab fa-zalo" style="font-size: 24px;"></i>
+                            0369.521.028
+                        </a>
+                        <!-- Facebook -->
+                        <a href="https://facebook.com/doquanghung" target="_blank" style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #1877f2, #0e5fcf); padding: 10px 20px; border-radius: 50px; text-decoration: none; color: white; font-weight: 500;">
+                            <i class="fab fa-facebook" style="font-size: 24px;"></i>
+                            Đỗ Quang Hưng
+                        </a>
+                    </div>
+                </div>
+                
+                <button onclick="window.location.href='index.html'" class="btn-primary">Về trang chủ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thành công (ĐÃ SỬA) -->
+    <div id="successModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeSuccessModal()">×</span>
+            <div style="text-align:center;">
+                <span style="font-size:5rem; color:green;">✅</span>
+                <h3>Thanh toán thành công!</h3>
+                <div id="accountInfo" style="margin:20px 0; background:var(--bg-hover); padding:15px; border-radius:var(--radius-lg);"></div>
+                
+                <!-- THÔNG TIN HỖ TRỢ -->
+                <div style="background: var(--bg-card); padding: 15px; border-radius: var(--radius-lg); margin: 20px 0; border: 1px solid var(--border-color);">
+                    <p style="margin-bottom: 10px; color: var(--text-secondary);">Cần hỗ trợ? Liên hệ ngay:</p>
+                    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                        <a href="https://zalo.me/0369521028" target="_blank" style="color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 5px;">
+                            <i class="fab fa-zalo" style="font-size: 20px;"></i> Zalo: 0369.521.028
+                        </a>
+                        <a href="https://facebook.com/doquanghung" target="_blank" style="color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 5px;">
+                            <i class="fab fa-facebook" style="font-size: 20px;"></i> FB: Đỗ Quang Hưng
+                        </a>
+                    </div>
+                </div>
+                
+                <button onclick="window.location.href='profile.html'" class="btn-primary">Xem trong hồ sơ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thất bại (ĐÃ SỬA) -->
+    <div id="failModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeFailModal()">×</span>
+            <div style="text-align:center;">
+                <span style="font-size:5rem; color:red;">❌</span>
+                <h3>Thanh toán thất bại</h3>
+                <p>Đơn hàng của bạn đã bị từ chối. Vui lòng liên hệ admin để biết thêm chi tiết.</p>
+                
+                <!-- THÔNG TIN HỖ TRỢ -->
+                <div style="background: var(--bg-card); padding: 15px; border-radius: var(--radius-lg); margin: 20px 0; border: 1px solid var(--border-color);">
+                    <p style="margin-bottom: 10px; color: var(--text-secondary);">Hỗ trợ trực tiếp:</p>
+                    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                        <a href="https://zalo.me/0369521028" target="_blank" style="color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 5px;">
+                            <i class="fab fa-zalo"></i> 0369.521.028
+                        </a>
+                        <a href="https://facebook.com/doquanghung" target="_blank" style="color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 5px;">
+                            <i class="fab fa-facebook"></i> Đỗ Quang Hưng
+                        </a>
+                    </div>
+                </div>
+                
+                <button onclick="window.location.href='index.html'" class="btn-primary">Tiếp tục mua sắm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER (ĐÃ SỬA) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Về chúng tôi</h4>
+                    <p>Shop chuyên cung cấp tài khoản game Liên Quân, TFT, PlayTogether uy tín, giá rẻ. Bảo hành trọn đời, hỗ trợ 24/7.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Liên kết nhanh</h4>
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li><a href="games.html?game=lien-quan">Liên Quân</a></li>
+                        <li><a href="games.html?game=tft">TFT</a></li>
+                        <li><a href="games.html?game=play-together">PlayTogether</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Chính sách</h4>
+                    <ul>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Bảo mật thông tin</a></li>
+                        <li><a href="#">Điều khoản dịch vụ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Liên hệ</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-phone"></i> <a href="https://zalo.me/0369521028" target="_blank">0369.521.028 (Zalo)</a></li>
+                        <li><i class="fas fa-envelope"></i> support@gameaccshop.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam</li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="https://facebook.com/doquanghung" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://zalo.me/0369521028" target="_blank"><i class="fab fa-zalo"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 GameAccount Shop. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserActions();
+            
+            // Lấy tham số game từ URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameParam = urlParams.get('game');
+            if (gameParam) {
+                document.querySelector(`input[name="game"][value="${gameParam}"]`).checked = true;
+                document.getElementById('gameTitleDisplay').textContent = 
+                    gameParam === 'lien-quan' ? 'Liên Quân Mobile' : 
+                    gameParam === 'tft' ? 'Đấu Trường Chân Lý' : 
+                    gameParam === 'play-together' ? 'PlayTogether' : 'Kho game';
+            }
+            
+            loadGamePage();
+            checkPendingNotifications();
+        });
+
+        // Biến toàn cục
+        let currentAccountId = null;
+        let currentAccountPrice = 0;
+        let currentAccountTitle = '';
+
+        // Hàm load game page
+        function loadGamePage() {
+            const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            const availableAccounts = accounts.filter(a => a.status === 'available');
+            
+            // Lọc theo game được chọn
+            const selectedGame = document.querySelector('input[name="game"]:checked')?.value || 'all';
+            let filtered = selectedGame === 'all' ? availableAccounts : availableAccounts.filter(a => a.game === selectedGame);
+            
+            // Lọc theo giá
+            const priceValue = document.querySelector('input[name="price"]:checked')?.value || 'all';
+            if (priceValue !== 'all') {
+                if (priceValue === '1000000+') {
+                    filtered = filtered.filter(a => a.price >= 1000000);
+                } else {
+                    const [min, max] = priceValue.split('-').map(Number);
+                    filtered = filtered.filter(a => a.price >= min && a.price <= max);
+                }
+            }
+            
+            // Sắp xếp
+            const sortBy = document.getElementById('sortSelect')?.value || 'newest';
+            if (sortBy === 'priceAsc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortBy === 'priceDesc') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else {
+                filtered.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+            }
+            
+            // Hiển thị kết quả
+            document.getElementById('resultCount').innerHTML = `<span>${filtered.length} tài khoản</span>`;
+            
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Không tìm thấy tài khoản phù hợp</p>';
+                return;
+            }
+            
+            filtered.forEach(account => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${account.images?.[0] || 'https://via.placeholder.com/200'}" alt="${account.title}">
+                    <h3>${account.title}</h3>
+                    <p class="rank">${account.rank || 'Không có rank'}</p>
+                    <p class="price">${account.price.toLocaleString()}đ</p>
+                    ${account.oldPrice ? `<p class="old-price">${account.oldPrice.toLocaleString()}đ</p>` : ''}
+                    <div class="card-actions">
+                        <button class="btn-view" onclick="openDetailModal(${account.id})">Xem chi tiết</button>
+                        <button class="btn-buy" onclick="openBuyModal(${account.id}, '${account.title.replace(/'/g, "\\'")}', ${account.price})">Mua ngay</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Hàm mở modal chi tiết
+        window.openDetailModal = function(accountId) {
+            const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            const account = accounts.find(a => a.id === accountId);
+            if (!account) return;
+            
+            const content = document.getElementById('detailContent');
+            content.innerHTML = `
+                <img src="${account.images?.[0] || 'https://via.placeholder.com/300'}" style="max-width:100%; border-radius:8px;">
+                <h4>${account.title}</h4>
+                <p><strong>Game:</strong> ${account.game === 'lien-quan' ? 'Liên Quân' : account.game === 'tft' ? 'Đấu Trường Chân Lý' : 'PlayTogether'}</p>
+                <p><strong>Rank:</strong> ${account.rank || 'Không có'}</p>
+                <p><strong>Mô tả:</strong> ${account.details || 'Không có mô tả'}</p>
+                <p><strong>Giá:</strong> ${account.price.toLocaleString()}đ</p>
+                ${account.oldPrice ? `<p><strong>Giá cũ:</strong> <del>${account.oldPrice.toLocaleString()}đ</del></p>` : ''}
+            `;
+            
+            document.getElementById('buyFromDetail').onclick = function() {
+                closeDetailModal();
+                openBuyModal(account.id, account.title, account.price);
+            };
+            
+            document.getElementById('detailModal').style.display = 'block';
+        };
+
+        window.closeDetailModal = function() {
+            document.getElementById('detailModal').style.display = 'none';
+        };
+
+        // Hàm mở modal mua hàng
+        window.openBuyModal = function(accountId, accountName, price) {
+            currentAccountId = accountId;
+            currentAccountPrice = price;
+            currentAccountTitle = accountName;
+
+            document.getElementById('modalAccountName').innerHTML = 'Tài khoản: <span>' + accountName + '</span>';
+            document.getElementById('modalPrice').innerText = formatPrice(price);
+            
+            // Lấy tên người dùng hiện tại từ localStorage
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const userName = currentUser ? (currentUser.username || '') : '';
+            
+            // Tạo nội dung chuyển khoản random: 5 chữ viết hoa + " - " + tên user
+            const randomCode = generateRandomCode(5);
+            const transferContent = randomCode + (userName ? ' - ' + userName : '');
+            document.getElementById('transferContent').value = transferContent;
+            
+            document.getElementById('buyModal').style.display = 'block';
+        };
+
+        window.closeBuyModal = function() {
+            document.getElementById('buyModal').style.display = 'none';
+        };
+        
+        window.closeWaitingModal = function() {
+            document.getElementById('waitingModal').style.display = 'none';
+        };
+        
+        window.closeSuccessModal = function() {
+            document.getElementById('successModal').style.display = 'none';
+        };
+        
+        window.closeFailModal = function() {
+            document.getElementById('failModal').style.display = 'none';
+        };
+
+        // Sao chép nội dung chuyển khoản
+        document.getElementById('copyTransferBtn')?.addEventListener('click', function() {
+            let copyText = document.getElementById('transferContent');
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            alert('Đã sao chép nội dung: ' + copyText.value);
+        });
+
+        // Xác nhận mua
+        document.getElementById('confirmBuy')?.addEventListener('click', function() {
+            const buyerName = document.getElementById('buyerName').value.trim();
+            const buyerPhone = document.getElementById('buyerPhone').value.trim();
+            const transferContent = document.getElementById('transferContent').value;
+            
+            if (!buyerName) {
+                alert('Vui lòng nhập tên của bạn');
+                return;
+            }
+
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('Bạn cần đăng nhập để mua hàng');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Lấy thông tin tài khoản
+            const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            const account = accounts.find(a => a.id === currentAccountId);
+            if (!account || account.status !== 'available') {
+                alert('Tài khoản không còn khả dụng');
+                closeBuyModal();
+                return;
+            }
+
+            // Tạo đơn hàng mới
+            const newOrder = {
+                id: Date.now(),
+                userId: currentUser.id,
+                accountId: currentAccountId,
+                accountName: currentAccountTitle,
+                price: currentAccountPrice,
+                buyerName: buyerName,
+                buyerPhone: buyerPhone,
+                transferContent: transferContent,
+                status: 'pending',
+                createdAt: new Date().toISOString(),
+                accountInfo: null
+            };
+
+            // Lưu vào localStorage
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders.push(newOrder);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Đóng modal mua và mở modal chờ
+            closeBuyModal();
+            document.getElementById('waitingModal').style.display = 'block';
+        });
+
+        // Hàm random mã
+        function generateRandomCode(length) {
+            let result = '';
+            let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        }
+
+        // Hàm format giá
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'đ';
+        }
+
+        // Kiểm tra thông báo từ admin
+        function checkPendingNotifications() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const notifiedOrders = JSON.parse(localStorage.getItem('notifiedOrders') || '[]');
+            
+            // Tìm đơn approved gần nhất chưa được thông báo
+            const approvedOrder = orders.find(o => o.userId === currentUser.id && o.status === 'approved' && !notifiedOrders.includes(o.id));
+            if (approvedOrder) {
+                const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+                const account = accounts.find(a => a.id === approvedOrder.accountId);
+                if (account) {
+                    document.getElementById('accountInfo').innerHTML = `
+                        <p><strong>Tài khoản:</strong> ${account.loginEmail || 'Không có'}</p>
+                        <p><strong>Mật khẩu:</strong> ${account.loginPassword || 'Không có'}</p>
+                        <p><small>Vui lòng đổi mật khẩu sau khi nhận</small></p>
+                    `;
+                } else {
+                    document.getElementById('accountInfo').innerHTML = '<p>Thông tin tài khoản không tồn tại</p>';
+                }
+                notifiedOrders.push(approvedOrder.id);
+                localStorage.setItem('notifiedOrders', JSON.stringify(notifiedOrders));
+                document.getElementById('successModal').style.display = 'block';
+            }
+
+            // Tìm đơn rejected gần nhất chưa được thông báo
+            const rejectedOrder = orders.find(o => o.userId === currentUser.id && o.status === 'rejected' && !notifiedOrders.includes(o.id));
+            if (rejectedOrder) {
+                notifiedOrders.push(rejectedOrder.id);
+                localStorage.setItem('notifiedOrders', JSON.stringify(notifiedOrders));
+                document.getElementById('failModal').style.display = 'block';
+            }
+        }
+
+        // Lắng nghe sự kiện thay đổi filter
+        document.getElementById('applyFilter')?.addEventListener('click', loadGamePage);
+        document.getElementById('sortSelect')?.addEventListener('change', loadGamePage);
+        document.querySelectorAll('input[name="game"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('gameTitleDisplay').textContent = 
+                    this.value === 'lien-quan' ? 'Liên Quân Mobile' : 
+                    this.value === 'tft' ? 'Đấu Trường Chân Lý' : 
+                    this.value === 'play-together' ? 'PlayTogether' : 'Kho game';
+                loadGamePage();
+            });
+        });
+        document.querySelectorAll('input[name="price"]').forEach(radio => {
+            radio.addEventListener('change', loadGamePage);
+        });
+
+        // Search
+        document.getElementById('searchBtn')?.addEventListener('click', function() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            window.location.href = 'games.html?search=' + encodeURIComponent(keyword);
+        });
+    </script>
+</body>
+</html>
