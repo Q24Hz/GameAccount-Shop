@@ -118,7 +118,7 @@
         </div>
     </div>
 
-    <!-- Modal mua hàng -->
+    <!-- Modal mua hàng (CẬP NHẬT) -->
     <div id="buyModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeBuyModal()">×</span>
@@ -133,65 +133,45 @@
             <div class="form-group">
                 <label>Số điện thoại (không bắt buộc):</label>
                 <input type="text" id="buyerPhone" class="form-control" placeholder="Để lại số nếu cần hỗ trợ">
-                <small class="text-muted">Khi thanh toán, nhớ ghi đúng nội dung chuyển khoản bên dưới.</small>
             </div>
             
             <div class="form-group">
-                <label>Giá: <span id="modalPrice">0đ</span></label>
+                <label>Giá mỗi sản phẩm: <span id="unitPrice">0đ</span></label>
             </div>
             
-            <!-- Nội dung chuyển khoản (random + tên user) -->
             <div class="form-group">
-                <label>Nội dung chuyển khoản:</label>
-                <div style="display: flex; align-items: center;">
-                    <input type="text" id="transferContent" class="form-control" readonly value="" style="flex:1;">
-                    <button type="button" id="copyTransferBtn" class="btn-sm" style="margin-left:5px;">Sao chép</button>
-                </div>
-                <small class="text-danger">(Chỉ khi chuyển khoản có nội dung mới được duyệt)</small>
+                <label>Số lượng:</label>
+                <input type="number" id="quantity" class="form-control" min="1" value="1" onchange="updateTotalPrice()">
             </div>
             
-            <button id="confirmBuy" class="btn-primary" style="margin-top:15px;">Xác nhận mua</button>
-        </div>
-    </div>
-
-    <!-- Modal chờ duyệt -->
-    <div id="waitingModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeWaitingModal()">×</span>
-            <div style="text-align:center;">
-                <span style="font-size:5rem; display:inline-block;" class="spin">⏳</span>
-                <h3>Đang chờ duyệt</h3>
-                <p>Đơn hàng của bạn đang được xử lý. Vui lòng chờ trong giây lát.</p>
-                
-                <!-- THÔNG TIN HỖ TRỢ MỚI -->
-                <div style="background: var(--bg-hover); padding: 20px; border-radius: var(--radius-lg); margin: 20px 0;">
-                    <p style="margin-bottom: 15px; color: var(--text-primary); font-weight: 500;">📞 LIÊN HỆ HỖ TRỢ</p>
-                    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-                        <!-- Zalo -->
-                        <a href="https://zalo.me/0369521028" target="_blank" style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #0068ff, #00aaff); padding: 10px 20px; border-radius: 50px; text-decoration: none; color: white; font-weight: 500;">
-                            <i class="fab fa-zalo" style="font-size: 24px;"></i>
-                            0369.521.028
-                        </a>
-                        <!-- Facebook -->
-                        <a href="https://facebook.com/doquanghung" target="_blank" style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #1877f2, #0e5fcf); padding: 10px 20px; border-radius: 50px; text-decoration: none; color: white; font-weight: 500;">
-                            <i class="fab fa-facebook" style="font-size: 24px;"></i>
-                            Đỗ Quang Hưng
-                        </a>
-                    </div>
+            <div class="form-group">
+                <label>Mã giảm giá:</label>
+                <div style="display: flex;">
+                    <input type="text" id="discountCode" class="form-control" placeholder="Nhập mã (nếu có)">
+                    <button type="button" id="applyDiscountBtn" class="btn-sm" style="margin-left:5px;">Áp dụng</button>
                 </div>
-                
-                <button onclick="window.location.href='index.html'" class="btn-primary">Về trang chủ</button>
+                <small id="discountMessage" style="color: var(--accent-green);"></small>
             </div>
+            
+            <div class="form-group">
+                <label>Tổng thanh toán: <span id="totalPrice">0đ</span></label>
+            </div>
+            
+            <div class="form-group">
+                <label>Số dư hiện tại: <span id="currentBalance">0đ</span></label>
+            </div>
+            
+            <button id="confirmBuy" class="btn-primary" style="margin-top:15px;">Thanh toán</button>
         </div>
     </div>
 
-    <!-- Modal thành công -->
+    <!-- Modal thành công (hiển thị tài khoản) -->
     <div id="successModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="closeSuccessModal()">×</span>
             <div style="text-align:center;">
                 <span style="font-size:5rem; color:green;">✅</span>
-                <h3>Thanh toán thành công!</h3>
+                <h3>Mua thành công!</h3>
                 <div id="accountInfo" style="margin:20px 0; background:var(--bg-hover); padding:15px; border-radius:var(--radius-lg);"></div>
                 
                 <!-- THÔNG TIN HỖ TRỢ -->
@@ -212,14 +192,14 @@
         </div>
     </div>
 
-    <!-- Modal thất bại -->
+    <!-- Modal thất bại (nếu lỗi) -->
     <div id="failModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close" onclick="closeFailModal()">×</span>
             <div style="text-align:center;">
                 <span style="font-size:5rem; color:red;">❌</span>
-                <h3>Thanh toán thất bại</h3>
-                <p>Đơn hàng của bạn đã bị từ chối. Vui lòng liên hệ admin để biết thêm chi tiết.</p>
+                <h3>Giao dịch thất bại</h3>
+                <p id="failMessage">Đã xảy ra lỗi. Vui lòng thử lại sau.</p>
                 
                 <!-- THÔNG TIN HỖ TRỢ -->
                 <div style="background: var(--bg-card); padding: 15px; border-radius: var(--radius-lg); margin: 20px 0; border: 1px solid var(--border-color);">
@@ -234,7 +214,7 @@
                     </div>
                 </div>
                 
-                <button onclick="window.location.href='index.html'" class="btn-primary">Tiếp tục mua sắm</button>
+                <button onclick="window.location.href='index.html'" class="btn-primary">Về trang chủ</button>
             </div>
         </div>
     </div>
@@ -290,7 +270,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadUserActions();
             
-            // Lấy tham số game từ URL
             const urlParams = new URLSearchParams(window.location.search);
             const gameParam = urlParams.get('game');
             if (gameParam) {
@@ -302,16 +281,13 @@
             }
             
             loadGamePage();
-            checkPendingNotifications();
 
-            // Toggle filter sidebar trên mobile
+            // Toggle filter sidebar
             const toggleFilterBtn = document.getElementById('toggleFilterBtn');
             const filterSidebar = document.querySelector('.filter-sidebar');
-
             if (toggleFilterBtn && filterSidebar) {
                 toggleFilterBtn.addEventListener('click', function() {
                     filterSidebar.classList.toggle('active');
-                    
                     const icon = this.querySelector('i');
                     if (filterSidebar.classList.contains('active')) {
                         icon.classList.remove('fa-filter');
@@ -324,23 +300,14 @@
                     }
                 });
             }
-
-            // Tự động đóng filter khi chọn một option trên mobile (tùy chọn)
-            document.querySelectorAll('.filter-options input').forEach(input => {
-                input.addEventListener('change', function() {
-                    if (window.innerWidth <= 768) {
-                        // Có thể tự động đóng filter sau khi chọn
-                        // filterSidebar.classList.remove('active');
-                        // toggleFilterBtn.innerHTML = '<i class="fas fa-filter"></i> Lọc sản phẩm';
-                    }
-                });
-            });
         });
 
         // Biến toàn cục
         let currentAccountId = null;
-        let currentAccountPrice = 0;
+        let currentUnitPrice = 0;
         let currentAccountTitle = '';
+        let currentDiscount = 0; // số tiền giảm hoặc phần trăm
+        let discountType = 'fixed'; // 'percent' hoặc 'fixed'
 
         // Hàm load game page
         function loadGamePage() {
@@ -426,20 +393,28 @@
             document.getElementById('detailModal').style.display = 'none';
         };
 
+        // Mở modal mua hàng
         window.openBuyModal = function(accountId, accountName, price) {
             currentAccountId = accountId;
-            currentAccountPrice = price;
+            currentUnitPrice = price;
             currentAccountTitle = accountName;
+            currentDiscount = 0;
 
             document.getElementById('modalAccountName').innerHTML = 'Tài khoản: <span>' + accountName + '</span>';
-            document.getElementById('modalPrice').innerText = formatPrice(price);
+            document.getElementById('unitPrice').innerText = formatPrice(price);
             
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const userName = currentUser ? (currentUser.username || '') : '';
+            // Hiển thị số dư hiện tại
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (user) {
+                document.getElementById('currentBalance').innerText = formatPrice(user.balance || 0);
+            } else {
+                document.getElementById('currentBalance').innerText = '0đ';
+            }
             
-            const randomCode = generateRandomCode(5);
-            const transferContent = randomCode + (userName ? ' - ' + userName : '');
-            document.getElementById('transferContent').value = transferContent;
+            document.getElementById('quantity').value = 1;
+            document.getElementById('discountCode').value = '';
+            document.getElementById('discountMessage').innerText = '';
+            updateTotalPrice();
             
             document.getElementById('buyModal').style.display = 'block';
         };
@@ -447,32 +422,54 @@
         window.closeBuyModal = function() {
             document.getElementById('buyModal').style.display = 'none';
         };
-        
-        window.closeWaitingModal = function() {
-            document.getElementById('waitingModal').style.display = 'none';
-        };
-        
-        window.closeSuccessModal = function() {
-            document.getElementById('successModal').style.display = 'none';
-        };
-        
-        window.closeFailModal = function() {
-            document.getElementById('failModal').style.display = 'none';
-        };
 
-        document.getElementById('copyTransferBtn')?.addEventListener('click', function() {
-            let copyText = document.getElementById('transferContent');
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            document.execCommand('copy');
-            alert('Đã sao chép nội dung: ' + copyText.value);
+        // Cập nhật tổng tiền
+        function updateTotalPrice() {
+            const qty = parseInt(document.getElementById('quantity').value) || 1;
+            let total = currentUnitPrice * qty;
+            if (currentDiscount > 0) {
+                if (discountType === 'percent') {
+                    total = total * (1 - currentDiscount / 100);
+                } else {
+                    total = total - currentDiscount;
+                }
+                if (total < 0) total = 0;
+            }
+            document.getElementById('totalPrice').innerText = formatPrice(total);
+            return total;
+        }
+
+        // Áp dụng mã giảm giá
+        document.getElementById('applyDiscountBtn')?.addEventListener('click', async function() {
+            const code = document.getElementById('discountCode').value.trim();
+            if (!code) return;
+            
+            const total = updateTotalPrice();
+            try {
+                const res = await fetch(`/api/discount/check?code=${code}&total=${total}`);
+                const data = await res.json();
+                if (data.valid) {
+                    currentDiscount = data.value;
+                    discountType = data.type;
+                    document.getElementById('discountMessage').innerText = `Áp dụng mã giảm ${data.type === 'percent' ? data.value + '%' : formatPrice(data.value)}`;
+                    updateTotalPrice();
+                } else {
+                    alert('Mã giảm giá không hợp lệ hoặc đã hết hạn');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Lỗi kiểm tra mã giảm giá');
+            }
         });
 
-        document.getElementById('confirmBuy')?.addEventListener('click', function() {
+        // Xác nhận mua (thanh toán)
+        document.getElementById('confirmBuy')?.addEventListener('click', async function() {
             const buyerName = document.getElementById('buyerName').value.trim();
             const buyerPhone = document.getElementById('buyerPhone').value.trim();
-            const transferContent = document.getElementById('transferContent').value;
-            
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+            const discountCode = document.getElementById('discountCode').value.trim() || null;
+            const totalPrice = parseFloat(document.getElementById('totalPrice').innerText.replace(/[^\d]/g, ''));
+
             if (!buyerName) {
                 alert('Vui lòng nhập tên của bạn');
                 return;
@@ -485,82 +482,71 @@
                 return;
             }
 
-            const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
-            const account = accounts.find(a => a.id === currentAccountId);
-            if (!account || account.status !== 'available') {
-                alert('Tài khoản không còn khả dụng');
-                closeBuyModal();
+            // Kiểm tra số dư
+            if (currentUser.balance < totalPrice) {
+                alert('Số dư không đủ. Vui lòng nạp thêm.');
                 return;
             }
 
-            const newOrder = {
-                id: Date.now(),
+            const orderData = {
                 userId: currentUser.id,
                 accountId: currentAccountId,
                 accountName: currentAccountTitle,
-                price: currentAccountPrice,
+                unitPrice: currentUnitPrice,
+                quantity: quantity,
+                totalPrice: totalPrice,
+                discountCode: discountCode,
                 buyerName: buyerName,
-                buyerPhone: buyerPhone,
-                transferContent: transferContent,
-                status: 'pending',
-                createdAt: new Date().toISOString(),
-                accountInfo: null
+                buyerPhone: buyerPhone
             };
 
-            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
-            orders.push(newOrder);
-            localStorage.setItem('orders', JSON.stringify(orders));
+            try {
+                const res = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    // Cập nhật số dư
+                    currentUser.balance -= totalPrice;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    // Đóng modal mua
+                    closeBuyModal();
 
-            closeBuyModal();
-            document.getElementById('waitingModal').style.display = 'block';
+                    // Hiển thị modal thành công với thông tin tài khoản
+                    document.getElementById('accountInfo').innerHTML = `
+                        <p><strong>Tài khoản:</strong> ${data.account.email}</p>
+                        <p><strong>Mật khẩu:</strong> ${data.account.password}</p>
+                        <p><small>Vui lòng đổi mật khẩu sau khi nhận</small></p>
+                    `;
+                    document.getElementById('successModal').style.display = 'block';
+                } else {
+                    document.getElementById('failMessage').innerText = data.message || 'Có lỗi khi đặt hàng';
+                    document.getElementById('failModal').style.display = 'block';
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('failMessage').innerText = 'Lỗi kết nối đến server';
+                document.getElementById('failModal').style.display = 'block';
+            }
         });
 
-        function generateRandomCode(length) {
-            let result = '';
-            let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            for (let i = 0; i < length; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            return result;
-        }
+        // Hàm đóng các modal
+        window.closeSuccessModal = function() {
+            document.getElementById('successModal').style.display = 'none';
+        };
+        window.closeFailModal = function() {
+            document.getElementById('failModal').style.display = 'none';
+        };
 
+        // Hàm format giá
         function formatPrice(price) {
             return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'đ';
         }
 
-        function checkPendingNotifications() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            if (!currentUser) return;
-
-            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-            const notifiedOrders = JSON.parse(localStorage.getItem('notifiedOrders') || '[]');
-            
-            const approvedOrder = orders.find(o => o.userId === currentUser.id && o.status === 'approved' && !notifiedOrders.includes(o.id));
-            if (approvedOrder) {
-                const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
-                const account = accounts.find(a => a.id === approvedOrder.accountId);
-                if (account) {
-                    document.getElementById('accountInfo').innerHTML = `
-                        <p><strong>Tài khoản:</strong> ${account.loginEmail || 'Không có'}</p>
-                        <p><strong>Mật khẩu:</strong> ${account.loginPassword || 'Không có'}</p>
-                        <p><small>Vui lòng đổi mật khẩu sau khi nhận</small></p>
-                    `;
-                } else {
-                    document.getElementById('accountInfo').innerHTML = '<p>Thông tin tài khoản không tồn tại</p>';
-                }
-                notifiedOrders.push(approvedOrder.id);
-                localStorage.setItem('notifiedOrders', JSON.stringify(notifiedOrders));
-                document.getElementById('successModal').style.display = 'block';
-            }
-
-            const rejectedOrder = orders.find(o => o.userId === currentUser.id && o.status === 'rejected' && !notifiedOrders.includes(o.id));
-            if (rejectedOrder) {
-                notifiedOrders.push(rejectedOrder.id);
-                localStorage.setItem('notifiedOrders', JSON.stringify(notifiedOrders));
-                document.getElementById('failModal').style.display = 'block';
-            }
-        }
-
+        // Các hàm còn lại (load filter events)
         document.getElementById('applyFilter')?.addEventListener('click', loadGamePage);
         document.getElementById('sortSelect')?.addEventListener('change', loadGamePage);
         document.querySelectorAll('input[name="game"]').forEach(radio => {
@@ -576,42 +562,101 @@
             radio.addEventListener('change', loadGamePage);
         });
 
+        // Search
         document.getElementById('searchBtn')?.addEventListener('click', function() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             window.location.href = 'games.html?search=' + encodeURIComponent(keyword);
-            // Toggle filter sidebar trên mobile
-const toggleFilterBtn = document.getElementById('toggleFilterBtn');
-const filterSidebar = document.querySelector('.filter-sidebar');
-
-if (toggleFilterBtn && filterSidebar) {
-    toggleFilterBtn.addEventListener('click', function() {
-        filterSidebar.classList.toggle('active');
-        
-        // Đổi icon và text
-        const icon = this.querySelector('i');
-        if (filterSidebar.classList.contains('active')) {
-            icon.classList.remove('fa-filter');
-            icon.classList.add('fa-times');
-            this.innerHTML = '<i class="fas fa-times"></i> Đóng bộ lọc';
-        } else {
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-filter');
-            this.innerHTML = '<i class="fas fa-filter"></i> Lọc sản phẩm';
-        }
-    });
-}
-
-// Tự động đóng filter khi chọn một option trên mobile
-document.querySelectorAll('.filter-options input').forEach(input => {
-    input.addEventListener('change', function() {
-        if (window.innerWidth <= 768) {
-            // Có thể tự động đóng filter sau khi chọn (tùy chọn)
-            // filterSidebar.classList.remove('active');
-            // toggleFilterBtn.innerHTML = '<i class="fas fa-filter"></i> Lọc sản phẩm';
-        }
-    });
-});
         });
+        
     </script>
+    <!-- Trong games.html, phần script -->
+<script>
+// ... các hàm khác giữ nguyên ...
+
+// Xác nhận mua (thanh toán bằng số dư)
+document.getElementById('confirmBuy').addEventListener('click', async function() {
+    const total = updateTotalPrice();
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+        alert('Bạn cần đăng nhập');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Kiểm tra số dư (frontend kiểm tra sơ bộ)
+    if (currentUser.balance < total) {
+        alert('Số dư không đủ. Vui lòng nạp thêm tiền.');
+        openTopUpModal();
+        return;
+    }
+
+    const buyerName = document.getElementById('buyerName').value.trim();
+    if (!buyerName) {
+        alert('Vui lòng nhập tên của bạn');
+        return;
+    }
+
+    const orderData = {
+        userId: currentUser.id,
+        accountId: currentAccountId,
+        accountName: currentAccountTitle,
+        unitPrice: currentUnitPrice,
+        quantity: parseInt(document.getElementById('quantity').value) || 1,
+        totalPrice: total,
+        discountCode: document.getElementById('discountCode').value || null,
+        buyerName: buyerName,
+        buyerPhone: document.getElementById('buyerPhone').value.trim()
+    };
+
+    try {
+        const res = await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            // Cập nhật số dư trong localStorage
+            currentUser.balance = data.newBalance;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Hiển thị modal thành công với thông tin tài khoản
+            closeBuyModal();
+            
+            // Hiển thị thông tin tài khoản
+            document.getElementById('accountInfo').innerHTML = `
+                <p><strong>Tài khoản:</strong> ${data.account.email}</p>
+                <p><strong>Mật khẩu:</strong> ${data.account.password}</p>
+                <p><small>Vui lòng đổi mật khẩu sau khi nhận</small></p>
+            `;
+            document.getElementById('successModal').style.display = 'block';
+        } else {
+            alert('Lỗi: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Lỗi đặt hàng:', error);
+        alert('Có lỗi xảy ra, vui lòng thử lại');
+    }
+});
+
+// Cập nhật hàm updateTotalPrice để tính tổng
+function updateTotalPrice() {
+    const qty = parseInt(document.getElementById('quantity').value) || 1;
+    let total = currentUnitPrice * qty;
+    
+    // Áp dụng giảm giá (nếu có)
+    if (currentDiscount > 0) {
+        if (discountType === 'percent') {
+            total = total * (1 - currentDiscount / 100);
+        } else {
+            total = total - currentDiscount;
+        }
+    }
+    document.getElementById('totalPrice').innerText = formatPrice(total);
+    return total;
+}
+</script>
 </body>
 </html>

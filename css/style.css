@@ -1432,3 +1432,271 @@ body {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     }
 }
+/* ===== BALANCE & TOPUP ===== */
+.balance-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 15px;
+}
+
+.balance-display {
+    background: linear-gradient(135deg, #ffd700, #ffa500);
+    padding: 5px 15px;
+    border-radius: 30px;
+    color: #000;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.btn-topup {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: transform 0.2s;
+}
+
+.btn-topup:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+}
+
+/* VietQR image */
+#vietqrImage {
+    max-width: 200px;
+    border-radius: var(--radius-md);
+    margin: 10px auto;
+    display: block;
+}
+
+/* Transfer code copy */
+.transfer-code-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--bg-hover);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    margin: 10px 0;
+}
+
+.transfer-code {
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--accent-blue);
+}
+
+/* Spin wheel */
+#wheelCanvas {
+    max-width: 100%;
+    height: auto;
+    margin: 15px auto;
+    display: block;
+}
+
+#spinBtn {
+    margin: 15px 0;
+}
+
+#spinResult {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--accent-blue);
+    margin: 10px 0;
+}
+
+/* Discount input group */
+.discount-input-group {
+    display: flex;
+    gap: 5px;
+}
+
+.discount-input-group .form-control {
+    flex: 1;
+}
+
+.btn-apply {
+    background: var(--accent-green);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.btn-apply:hover {
+    background: #15803d;
+}
+
+/* Quantity input */
+#quantity {
+    max-width: 100px;
+}
+
+/* Total price highlight */
+#totalPrice {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-blue);
+}
+
+/* Modal adjustment for mobile */
+@media (max-width: 768px) {
+    .balance-container {
+        margin-right: 0;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .discount-input-group {
+        flex-direction: column;
+    }
+    
+    #vietqrImage {
+        max-width: 150px;
+    }
+}
+/* ===== BALANCE & TOPUP ===== */
+.balance-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 15px;
+}
+
+.balance-display {
+    background: linear-gradient(135deg, #ffd700, #ffa500);
+    padding: 5px 15px;
+    border-radius: 30px;
+    color: #000;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.btn-topup {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: transform 0.2s;
+}
+
+.btn-topup:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+}
+
+/* VietQR image */
+#vietqrImage {
+    max-width: 200px;
+    border-radius: var(--radius-md);
+    margin: 10px auto;
+    display: block;
+}
+
+/* Transfer code copy */
+.transfer-code-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--bg-hover);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    margin: 10px 0;
+}
+
+.transfer-code {
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--accent-blue);
+}
+
+/* Spin wheel */
+#wheelCanvas {
+    max-width: 100%;
+    height: auto;
+    margin: 15px auto;
+    display: block;
+}
+
+#spinBtn {
+    margin: 15px 0;
+}
+
+#spinResult {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--accent-blue);
+    margin: 10px 0;
+}
+
+/* Discount input group */
+.discount-input-group {
+    display: flex;
+    gap: 5px;
+}
+
+.discount-input-group .form-control {
+    flex: 1;
+}
+
+.btn-apply {
+    background: var(--accent-green);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.btn-apply:hover {
+    background: #15803d;
+}
+
+/* Quantity input */
+#quantity {
+    max-width: 100px;
+}
+
+/* Total price highlight */
+#totalPrice {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-blue);
+}
+
+/* Modal adjustment for mobile */
+@media (max-width: 768px) {
+    .balance-container {
+        margin-right: 0;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .discount-input-group {
+        flex-direction: column;
+    }
+    
+    #vietqrImage {
+        max-width: 150px;
+    }
+}

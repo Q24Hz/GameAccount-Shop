@@ -1,0 +1,13 @@
+{
+  "name": "toolh",
+  "version": "1.0.0",
+  "description": "Shop bán tài khoản game",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "mongodb": "^5.0.0",
+    "cors": "^2.8.5"
+  }
+}

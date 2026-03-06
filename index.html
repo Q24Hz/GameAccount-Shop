@@ -122,5 +122,91 @@
             loadRecentAccounts();
         });
     </script>
+    <!-- Modal nạp tiền -->
+<div id="topupModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeTopUpModal()">×</span>
+        <h3>Nạp tiền vào ví</h3>
+        <div class="form-group">
+            <label>Số tiền cần nạp (VNĐ)</label>
+            <input type="number" id="topupAmount" class="form-control" min="1000" step="1000" value="10000">
+        </div>
+        <div class="form-group">
+            <label>Phương thức thanh toán</label>
+            <select id="topupMethod" class="form-control">
+                <option value="vietqr">VietQR (Chuyển khoản ngân hàng)</option>
+            </select>
+        </div>
+        <div style="text-align:center; margin:15px 0;">
+            <p>Quét mã QR để chuyển khoản</p>
+            <img id="vietqrImage" src="" alt="QR Code" style="max-width:200px; border-radius:8px;">
+            <div class="transfer-code-box">
+                <span>Nội dung: <strong id="transferCode" class="transfer-code"></strong></span>
+                <button class="btn-sm" onclick="copyTransferCode()">Sao chép</button>
+            </div>
+        </div>
+        <button id="confirmTopup" class="btn-primary">Tạo lệnh nạp</button>
+    </div>
+</div>
+
+<!-- Modal vòng quay may mắn -->
+<div id="spinModal" class="modal">
+    <div class="modal-content" style="text-align:center;">
+        <span class="close" onclick="closeSpinModal()">×</span>
+        <h3>Vòng quay may mắn</h3>
+        <canvas id="wheelCanvas" width="300" height="300"></canvas>
+        <button id="spinBtn" class="btn-primary" onclick="spinWheel()">Quay ngay (1 lần/ngày)</button>
+        <p id="spinResult"></p>
+    </div>
+</div>
+
+<script>
+// Copy transfer code
+function copyTransferCode() {
+    navigator.clipboard.writeText(currentTopupCode);
+    alert('Đã sao chép nội dung chuyển khoản: ' + currentTopupCode);
+}
+
+// Khi DOM load xong
+document.addEventListener('DOMContentLoaded', function() {
+    // Thêm sự kiện cho nút nạp tiền
+    const topupAmount = document.getElementById('topupAmount');
+    if (topupAmount) {
+        topupAmount.addEventListener('input', generateTopupCode);
+    }
+    
+    const confirmTopup = document.getElementById('confirmTopup');
+    if (confirmTopup) {
+        confirmTopup.addEventListener('click', async function() {
+            const amount = parseInt(document.getElementById('topupAmount').value);
+            const code = currentTopupCode;
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert('Bạn cần đăng nhập');
+                return;
+            }
+
+            const res = await fetch('/api/topup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: currentUser.id,
+                    amount,
+                    code,
+                    method: 'vietqr'
+                })
+            });
+            if (res.ok) {
+                alert('Đã tạo lệnh nạp. Vui lòng chuyển khoản đúng nội dung. Số dư sẽ được cập nhật sau khi xác nhận.');
+                closeTopUpModal();
+                // Mở modal vòng quay sau khi nạp thành công (tùy chọn)
+                openSpinModal();
+            } else {
+                alert('Có lỗi xảy ra');
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

@@ -62,18 +62,18 @@
                 <button class="tab-btn" data-tab="add">Thêm tài khoản</button>
                 <button class="tab-btn" data-tab="revenue">Doanh thu</button>
                 <button class="tab-btn" data-tab="manage">Quản lý tài khoản</button>
+                <button class="tab-btn" data-tab="topups">Nạp tiền</button>
             </div>
 
             <!-- Tab Thống kê (Dashboard) -->
             <div id="stats-tab" class="tab-content active">
-                <!-- Welcome message -->
+                <!-- Nội dung giữ nguyên -->
                 <div style="margin-bottom: 30px;">
                     <h2>Welcome back, Admin!</h2>
                     <p style="color: var(--text-secondary);">Here's what's happening with your store today</p>
                     <p style="color: var(--text-secondary);"><i class="far fa-calendar-alt"></i> Monday, July 28, 2025</p>
                 </div>
 
-                <!-- Main stats cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <h3>Total Revenue</h3>
@@ -97,7 +97,6 @@
                     </div>
                 </div>
 
-                <!-- Sales Overview (placeholder chart) -->
                 <div style="background: var(--bg-card); padding: 24px; border-radius: var(--radius-lg); margin-bottom: 30px;">
                     <h3 style="margin-bottom: 15px;">Sales Overview</h3>
                     <div style="height: 200px; display: flex; align-items: flex-end; gap: 20px;">
@@ -110,14 +109,13 @@
                     <p style="color: var(--text-secondary); margin-top: 15px;">Chart integration coming soon.</p>
                 </div>
 
-               <!-- Quick Actions -->
-<div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px;">
-    <button class="btn" onclick="window.location.href='#add-tab'"><i class="fas fa-plus"></i> Add New Product</button>
-    <button class="btn" onclick="document.querySelector('[data-tab=&quot;orders&quot;]').click()"><i class="fas fa-shopping-cart"></i> Manage Orders</button>
-    <button class="btn" onclick="document.querySelector('[data-tab=&quot;customers&quot;]').click()"><i class="fas fa-users"></i> View Customers</button>
-    <button class="btn" onclick="window.location.href='#reports'"><i class="fas fa-chart-line"></i> View Reports</button>
-</div>
-                <!-- Order Status Distribution & Recent Orders -->
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 30px;">
+                    <button class="btn" onclick="window.location.href='#add-tab'"><i class="fas fa-plus"></i> Add New Product</button>
+                    <button class="btn" onclick="document.querySelector('[data-tab=&quot;orders&quot;]').click()"><i class="fas fa-shopping-cart"></i> Manage Orders</button>
+                    <button class="btn" onclick="document.querySelector('[data-tab=&quot;customers&quot;]').click()"><i class="fas fa-users"></i> View Customers</button>
+                    <button class="btn" onclick="window.location.href='#reports'"><i class="fas fa-chart-line"></i> View Reports</button>
+                </div>
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                     <div style="background: var(--bg-card); padding: 20px; border-radius: var(--radius-lg);">
                         <h3>Order Status Distribution</h3>
@@ -130,9 +128,7 @@
                     </div>
                     <div style="background: var(--bg-card); padding: 20px; border-radius: var(--radius-lg);">
                         <h3>Recent Orders</h3>
-                        <div id="recentOrdersList">
-                            <!-- Dynamically loaded -->
-                        </div>
+                        <div id="recentOrdersList"></div>
                     </div>
                 </div>
             </div>
@@ -142,7 +138,6 @@
                 <h2>Manage Orders</h2>
                 <p style="color: var(--text-secondary); margin-bottom: 20px;">Theo dõi và quản lý tất cả đơn hàng</p>
                 
-                <!-- Filter bar -->
                 <div class="filter-bar">
                     <div class="form-group" style="margin: 0;">
                         <label>Status</label>
@@ -150,7 +145,7 @@
                             <option value="all">Tất cả</option>
                             <option value="pending">Pending</option>
                             <option value="processing">Processing</option>
-                            <option value="approved">Completed</option>
+                            <option value="completed">Completed</option>
                             <option value="rejected">Rejected</option>
                         </select>
                     </div>
@@ -178,9 +173,7 @@
                             <th>Total</th>
                         </tr>
                     </thead>
-                    <tbody id="pendingOrdersList">
-                        <!-- JS sẽ load -->
-                    </tbody>
+                    <tbody id="pendingOrdersList"></tbody>
                 </table>
 
                 <h3 style="margin-top: 30px;">Đơn hàng đã xử lý</h3>
@@ -194,9 +187,7 @@
                             <th>Total</th>
                         </tr>
                     </thead>
-                    <tbody id="processedOrdersList">
-                        <!-- JS sẽ load -->
-                    </tbody>
+                    <tbody id="processedOrdersList"></tbody>
                 </table>
             </div>
 
@@ -205,7 +196,6 @@
                 <h2>Customers Management</h2>
                 <p style="color: var(--text-secondary); margin-bottom: 20px;">Theo dõi và quản lý tất cả khách hàng</p>
                 
-                <!-- Customer stats -->
                 <div class="stats-grid" style="grid-template-columns: repeat(4,1fr);">
                     <div class="stat-card">
                         <h3>Total Customers</h3>
@@ -235,17 +225,14 @@
                             <th>Total Spent</th>
                         </tr>
                     </thead>
-                    <tbody id="customersList">
-                        <!-- JS sẽ load -->
-                    </tbody>
+                    <tbody id="customersList"></tbody>
                 </table>
             </div>
 
-            <!-- Tab Thêm tài khoản (giữ nguyên) -->
+            <!-- Tab Thêm tài khoản -->
             <div id="add-tab" class="tab-content">
                 <h2>Thêm tài khoản mới</h2>
                 <form id="addAccountForm">
-                    <!-- giữ nguyên form cũ -->
                     <div class="form-group">
                         <label for="game">Chọn game</label>
                         <select id="game" required>
@@ -323,11 +310,72 @@
                     <tbody id="accountsList"></tbody>
                 </table>
             </div>
+
+            <!-- Tab Quản lý nạp tiền -->
+            <div id="topups-tab" class="tab-content">
+                <h2>Quản lý nạp tiền</h2>
+                <table class="topups-table">
+                    <thead>
+                        <tr>
+                            <th>Mã GD</th>
+                            <th>Người dùng</th>
+                            <th>Số tiền</th>
+                            <th>Nội dung</th>
+                            <th>Thời gian</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topupsList"></tbody>
+                </table>
+            </div>
         </div>
     </main>
 
     <footer class="footer">
-        <!-- giống index -->
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Về chúng tôi</h4>
+                    <p>Shop chuyên cung cấp tài khoản game Liên Quân, TFT, PlayTogether uy tín, giá rẻ. Bảo hành trọn đời, hỗ trợ 24/7.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Liên kết nhanh</h4>
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li><a href="games.html?game=lien-quan">Liên Quân</a></li>
+                        <li><a href="games.html?game=tft">TFT</a></li>
+                        <li><a href="games.html?game=play-together">PlayTogether</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Chính sách</h4>
+                    <ul>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Bảo mật thông tin</a></li>
+                        <li><a href="#">Điều khoản dịch vụ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Liên hệ</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-phone"></i> <a href="https://zalo.me/0369521028" target="_blank">0369.521.028 (Zalo)</a></li>
+                        <li><i class="fas fa-envelope"></i> support@gameaccshop.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam</li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="https://facebook.com/doquanghung" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://zalo.me/0369521028" target="_blank"><i class="fab fa-zalo"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 GameAccount Shop. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
 
     <script src="js/main.js"></script>
@@ -341,13 +389,19 @@
             }
         })();
 
+        // Format giá tiền
+        function formatPrice(price) {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'đ';
+        }
+
         // Tab switching
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                 this.classList.add('active');
-                document.getElementById(this.dataset.tab + '-tab').classList.add('active');
+                const tabId = this.dataset.tab + '-tab';
+                document.getElementById(tabId).classList.add('active');
                 
                 // Load data khi chuyển tab
                 if (this.dataset.tab === 'orders') {
@@ -360,6 +414,8 @@
                     loadRevenue();
                 } else if (this.dataset.tab === 'customers') {
                     loadCustomers();
+                } else if (this.dataset.tab === 'topups') {
+                    loadTopups();
                 }
             });
         });
@@ -372,11 +428,10 @@
             
             const total = accounts.length;
             const sold = accounts.filter(a => a.status === 'sold').length;
-            const available = total - sold;
-            const revenue = orders.filter(o => o.status === 'approved').reduce((sum, o) => sum + o.price, 0);
+            const revenue = orders.filter(o => o.status === 'completed').reduce((sum, o) => sum + o.totalPrice, 0);
 
             document.getElementById('totalProducts').textContent = total;
-            document.getElementById('totalRevenue').textContent = revenue.toLocaleString() + ' đ';
+            document.getElementById('totalRevenue').textContent = formatPrice(revenue);
             document.getElementById('totalOrders').textContent = orders.length;
             document.getElementById('totalCustomers').textContent = users.length;
 
@@ -384,17 +439,14 @@
             document.getElementById('quickOrders').textContent = orders.length;
             document.getElementById('quickUsers').textContent = users.length;
 
-            // Order status distribution
             const pending = orders.filter(o => o.status === 'pending').length;
-            const processing = orders.filter(o => o.status === 'processing' || o.status === 'pending').length; // tạm
-            const completed = orders.filter(o => o.status === 'approved').length;
-            const others = orders.filter(o => o.status === 'rejected').length;
+            const completed = orders.filter(o => o.status === 'completed').length;
+            const rejected = orders.filter(o => o.status === 'rejected').length;
             document.getElementById('pendingCount').textContent = pending;
-            document.getElementById('processingCount').textContent = processing;
+            document.getElementById('processingCount').textContent = 0;
             document.getElementById('completedCount').textContent = completed;
-            document.getElementById('othersCount').textContent = others;
+            document.getElementById('othersCount').textContent = rejected;
 
-            // Recent orders
             const recentTbody = document.getElementById('recentOrdersList');
             recentTbody.innerHTML = '';
             orders.slice(-5).reverse().forEach(order => {
@@ -406,9 +458,9 @@
                 div.innerHTML = `
                     <div style="display: flex; justify-content: space-between;">
                         <span><strong>${account.title}</strong> - ${user.username}</span>
-                        <span class="status-badge status-${order.status === 'approved' ? 'success' : order.status}">${order.status}</span>
+                        <span class="status-badge status-${order.status === 'completed' ? 'success' : order.status}">${order.status}</span>
                     </div>
-                    <div style="color: var(--text-secondary); font-size: 13px;">${new Date(order.createdAt).toLocaleDateString('vi-VN')} - ${order.price.toLocaleString()}đ</div>
+                    <div style="color: var(--text-secondary); font-size: 13px;">${new Date(order.createdAt).toLocaleDateString('vi-VN')} - ${formatPrice(order.totalPrice)}</div>
                 `;
                 recentTbody.appendChild(div);
             });
@@ -420,7 +472,6 @@
             const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
             const users = JSON.parse(localStorage.getItem('users') || '[]');
 
-            // Đơn pending
             const pendingOrders = orders.filter(o => o.status === 'pending');
             const pendingTbody = document.getElementById('pendingOrdersList');
             pendingTbody.innerHTML = '';
@@ -432,16 +483,15 @@
                     <td>ORD-${order.id}</td>
                     <td>${user.username}<br><small style="color:var(--text-secondary)">${user.email || ''}</small></td>
                     <td><span class="status-badge status-pending">Pending</span></td>
-                    <td>SePay</td>
-                    <td>${order.price.toLocaleString()} đ<br>
-                        <button class="btn-approve" onclick="approveOrder(${order.id})">Xác nhận</button>
+                    <td>Balance</td>
+                    <td>${formatPrice(order.totalPrice)}<br>
+                        <button class="btn-approve" onclick="approveOrder(${order.id})">Duyệt</button>
                         <button class="btn-reject" onclick="rejectOrder(${order.id})">Từ chối</button>
                     </td>
                 `;
                 pendingTbody.appendChild(row);
             });
 
-            // Đơn đã xử lý
             const processedOrders = orders.filter(o => o.status !== 'pending').sort((a,b) => new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt));
             const processedTbody = document.getElementById('processedOrdersList');
             processedTbody.innerHTML = '';
@@ -452,20 +502,57 @@
                 row.innerHTML = `
                     <td>ORD-${order.id}</td>
                     <td>${user.username}<br><small>${user.email || ''}</small></td>
-                    <td><span class="status-badge status-${order.status === 'approved' ? 'success' : 'failed'}">${order.status === 'approved' ? 'Delivered' : 'Rejected'}</span></td>
-                    <td>SePay</td>
-                    <td>${order.price.toLocaleString()} đ</td>
+                    <td><span class="status-badge status-${order.status === 'completed' ? 'success' : 'failed'}">${order.status === 'completed' ? 'Completed' : 'Rejected'}</span></td>
+                    <td>Balance</td>
+                    <td>${formatPrice(order.totalPrice)}</td>
                 `;
                 processedTbody.appendChild(row);
             });
         }
+
+        // Xử lý duyệt/từ chối đơn hàng
+        window.approveOrder = function(orderId) {
+            if (!confirm('Xác nhận duyệt đơn hàng này?')) return;
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            let accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
+            
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex === -1) return;
+            const order = orders[orderIndex];
+            const accountIndex = accounts.findIndex(a => a.id === order.accountId);
+            if (accountIndex === -1) {
+                alert('Không tìm thấy tài khoản!');
+                return;
+            }
+            accounts[accountIndex].status = 'sold';
+            orders[orderIndex].status = 'completed';
+            orders[orderIndex].updatedAt = new Date().toISOString();
+
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            localStorage.setItem('orders', JSON.stringify(orders));
+            loadOrders();
+            loadStats();
+            alert('Đã duyệt đơn hàng!');
+        };
+
+        window.rejectOrder = function(orderId) {
+            if (!confirm('Từ chối đơn hàng này?')) return;
+            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex === -1) return;
+            orders[orderIndex].status = 'rejected';
+            orders[orderIndex].updatedAt = new Date().toISOString();
+            localStorage.setItem('orders', JSON.stringify(orders));
+            loadOrders();
+            alert('Đã từ chối!');
+        };
 
         // Load customers
         function loadCustomers() {
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const orders = JSON.parse(localStorage.getItem('orders') || '[]');
             
-            const customers = users.filter(u => u.role !== 'admin'); // chỉ hiển thị khách hàng
+            const customers = users.filter(u => u.role !== 'admin');
             const tbody = document.getElementById('customersList');
             tbody.innerHTML = '';
 
@@ -475,90 +562,32 @@
             customers.forEach(user => {
                 const userOrders = orders.filter(o => o.userId === user.id);
                 const orderCount = userOrders.length;
-                const spent = userOrders.filter(o => o.status === 'approved').reduce((sum, o) => sum + o.price, 0);
+                const spent = userOrders.filter(o => o.status === 'completed').reduce((sum, o) => sum + o.totalPrice, 0);
                 if (orderCount > 0) withOrders++;
                 totalSpentAll += spent;
 
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>
-                        <strong>${user.username}</strong><br>
-                        <small style="color:var(--text-secondary)">${user.email}</small>
-                    </td>
+                    <td><strong>${user.username}</strong><br><small style="color:var(--text-secondary)">${user.email}</small></td>
                     <td>Shop customer</td>
-                    <td>${new Date(user.id).toLocaleDateString('vi-VN')}</td>
+                    <td>${new Date(user.createdAt || user.id).toLocaleDateString('vi-VN')}</td>
                     <td>${orderCount}</td>
-                    <td>${spent.toLocaleString()} đ</td>
+                    <td>${formatPrice(spent)}</td>
                 `;
                 tbody.appendChild(row);
             });
 
             document.getElementById('totalCustomersStat').textContent = customers.length;
             document.getElementById('customersWithOrders').textContent = withOrders;
-            document.getElementById('activeCustomers').textContent = withOrders; // tạm
+            document.getElementById('activeCustomers').textContent = withOrders;
             const avg = customers.length ? totalSpentAll / customers.length : 0;
-            document.getElementById('avgSpent').textContent = avg.toLocaleString() + ' đ';
+            document.getElementById('avgSpent').textContent = formatPrice(avg);
         }
 
-        // Xử lý duyệt đơn
-        window.approveOrder = function(orderId) {
-            if (!confirm('Xác nhận duyệt đơn hàng này?')) return;
-
-            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
-            let accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
-            
-            const orderIndex = orders.findIndex(o => o.id === orderId);
-            if (orderIndex === -1) return;
-
-            const order = orders[orderIndex];
-            const accountIndex = accounts.findIndex(a => a.id === order.accountId);
-            if (accountIndex === -1) {
-                alert('Không tìm thấy tài khoản!');
-                return;
-            }
-
-            accounts[accountIndex].status = 'sold';
-            orders[orderIndex].status = 'approved';
-            orders[orderIndex].updatedAt = new Date().toISOString();
-
-            localStorage.setItem('accounts', JSON.stringify(accounts));
-            localStorage.setItem('orders', JSON.stringify(orders));
-
-            const notifiedOrders = JSON.parse(localStorage.getItem('notifiedOrders') || '[]');
-            notifiedOrders.push(orderId);
-            localStorage.setItem('notifiedOrders', JSON.stringify(notifiedOrders));
-
-            loadOrders();
-            loadStats();
-            alert('Đã duyệt đơn hàng thành công!');
-        };
-
-        window.rejectOrder = function(orderId) {
-            if (!confirm('Từ chối đơn hàng này?')) return;
-
-            let orders = JSON.parse(localStorage.getItem('orders') || '[]');
-            const orderIndex = orders.findIndex(o => o.id === orderId);
-            if (orderIndex === -1) return;
-
-            orders[orderIndex].status = 'rejected';
-            orders[orderIndex].updatedAt = new Date().toISOString();
-
-            localStorage.setItem('orders', JSON.stringify(orders));
-
-            const notifiedOrders = JSON.parse(localStorage.getItem('notifiedOrders') || '[]');
-            notifiedOrders.push(orderId);
-            localStorage.setItem('notifiedOrders', JSON.stringify(notifiedOrders));
-
-            loadOrders();
-            alert('Đã từ chối đơn hàng!');
-        };
-
-        // Các hàm còn lại giữ nguyên
-        document.getElementById('addAccountForm').addEventListener('submit', function(e) {
+        // Thêm tài khoản (gọi API)
+        document.getElementById('addAccountForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
-            const newAccount = {
-                id: Date.now(),
+            const formData = {
                 game: document.getElementById('game').value,
                 title: document.getElementById('title').value,
                 rank: document.getElementById('rank').value,
@@ -567,37 +596,50 @@
                 oldPrice: document.getElementById('oldPrice').value ? parseInt(document.getElementById('oldPrice').value) : null,
                 loginEmail: document.getElementById('loginEmail').value,
                 loginPassword: document.getElementById('loginPassword').value,
-                images: document.getElementById('images').value.split(',').map(s => s.trim()).filter(s => s),
-                status: 'available',
-                date: new Date().toISOString()
+                images: document.getElementById('images').value.split(',').map(s => s.trim()).filter(s => s)
             };
-            accounts.push(newAccount);
-            localStorage.setItem('accounts', JSON.stringify(accounts));
-            document.getElementById('addMessage').innerHTML = '<p style="color:green;">Thêm tài khoản thành công!</p>';
-            this.reset();
-            loadStats();
+
+            try {
+                const res = await fetch('/api/admin/add-account', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    document.getElementById('addMessage').innerHTML = '<p style="color:green;">Thêm tài khoản thành công!</p>';
+                    this.reset();
+                    loadStats();
+                } else {
+                    document.getElementById('addMessage').innerHTML = `<p style="color:red;">Lỗi: ${data.message}</p>`;
+                }
+            } catch (error) {
+                document.getElementById('addMessage').innerHTML = '<p style="color:red;">Lỗi kết nối server</p>';
+            }
         });
 
+        // Load revenue
         function loadRevenue() {
-            const orders = JSON.parse(localStorage.getItem('orders') || '[]').filter(o => o.status === 'approved');
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]').filter(o => o.status === 'completed');
             const monthly = {};
             orders.forEach(order => {
-                const date = new Date(order.updatedAt || order.createdAt);
+                const date = new Date(order.completedAt || order.createdAt);
                 const month = date.getMonth() + 1;
                 const year = date.getFullYear();
                 const key = `${year}-${month}`;
-                monthly[key] = (monthly[key] || 0) + order.price;
+                monthly[key] = (monthly[key] || 0) + order.totalPrice;
             });
             const tbody = document.getElementById('revenueTable');
             tbody.innerHTML = '';
             Object.keys(monthly).sort().reverse().forEach(key => {
                 const [year, month] = key.split('-');
                 const row = document.createElement('tr');
-                row.innerHTML = `<td>Tháng ${month}/${year}</td><td>${monthly[key].toLocaleString()}đ</td>`;
+                row.innerHTML = `<td>Tháng ${month}/${year}</td><td>${formatPrice(monthly[key])}</td>`;
                 tbody.appendChild(row);
             });
         }
 
+        // Load accounts list
         function loadAccountsList() {
             const accounts = JSON.parse(localStorage.getItem('accounts') || '[]');
             const tbody = document.getElementById('accountsList');
@@ -609,7 +651,7 @@
                     <td>${acc.game === 'lien-quan' ? 'Liên Quân' : acc.game === 'tft' ? 'TFT' : 'PlayTogether'}</td>
                     <td>${acc.title}</td>
                     <td>${acc.rank || ''}</td>
-                    <td>${acc.price.toLocaleString()}đ</td>
+                    <td>${formatPrice(acc.price)}</td>
                     <td><span class="status-badge status-${acc.status === 'available' ? 'pending' : 'success'}">${acc.status === 'available' ? 'Còn bán' : 'Đã bán'}</span></td>
                     <td><button class="btn-delete" onclick="deleteAccount(${acc.id})">Xóa</button></td>
                 `;
@@ -627,10 +669,82 @@
             }
         };
 
+        // ===== XỬ LÝ NẠP TIỀN =====
+        async function loadTopups() {
+            try {
+                const res = await fetch('/api/admin/topups');
+                if (!res.ok) throw new Error('Không thể lấy dữ liệu');
+                const data = await res.json();
+                const tbody = document.getElementById('topupsList');
+                tbody.innerHTML = '';
+                data.forEach(t => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${t.code}</td>
+                        <td>${t.username || t.userId}</td>
+                        <td>${formatPrice(t.amount)}</td>
+                        <td>${t.code}</td>
+                        <td>${new Date(t.createdAt).toLocaleString()}</td>
+                        <td><span class="status-badge status-${t.status}">${t.status === 'pending' ? 'Chờ duyệt' : (t.status === 'completed' ? 'Đã duyệt' : 'Từ chối')}</span></td>
+                        <td>
+                            ${t.status === 'pending' ? `
+                                <button class="btn-approve" onclick="approveTopup(${t.id})">Xác nhận</button>
+                                <button class="btn-reject" onclick="rejectTopup(${t.id})">Từ chối</button>
+                            ` : ''}
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error(error);
+                document.getElementById('topupsList').innerHTML = '<tr><td colspan="7" style="text-align:center;">Lỗi tải dữ liệu</td></tr>';
+            }
+        }
+
+        window.approveTopup = async function(id) {
+            if (!confirm('Xác nhận cộng tiền cho user?')) return;
+            try {
+                const res = await fetch('/api/admin/approve-topup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+                if (res.ok) {
+                    alert('Đã cộng tiền thành công');
+                    loadTopups();
+                    loadStats();
+                } else {
+                    const err = await res.json();
+                    alert('Lỗi: ' + err.message);
+                }
+            } catch (error) {
+                alert('Lỗi kết nối');
+            }
+        };
+
+        window.rejectTopup = async function(id) {
+            const note = prompt('Lý do từ chối (không bắt buộc):');
+            try {
+                const res = await fetch('/api/admin/approve-topup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, action: 'reject', note })
+                });
+                if (res.ok) {
+                    alert('Đã từ chối');
+                    loadTopups();
+                } else {
+                    alert('Lỗi');
+                }
+            } catch (error) {
+                alert('Lỗi kết nối');
+            }
+        };
+
         // Khởi tạo
         loadStats();
         loadRevenue();
-        loadUserActions();
+        loadUserActions(); // từ main.js
     </script>
 </body>
 </html>
